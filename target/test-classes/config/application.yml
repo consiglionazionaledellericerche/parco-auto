@@ -16,12 +16,12 @@
 
 spring:
     application:
-        name: auto
+        name: parcoauto
     cache:
         type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:auto;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        url: jdbc:h2:mem:parcoauto;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
         name:
         username:
         password:
@@ -90,7 +90,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: NDBkMzJlNDg5YzBlYjIzZjM4MmFlNjgwNDA4Yzg2ODBhNWQ2ZWYxYWQ2MTE3Y2E5ZDFiNzdiZDNkNzMxNTFiZjE2NzY0Y2U2MGFlOGEzZGJmOGRlMzFiOTNlNGE3ZDZiOTIyZjllNGYzOGU1N2Q3NjNkOGM3ZWJiYzVlMjFjMjI=
+                base64-secret: MDA2MTRiZTQ1YWRjODI5MWJmYWY2YWY2MmI2NDRjYzZlMGNkMGVkMDlhMDhmMTdmOTg0OGVkNjU3MTk1NDliOTFhOWE4ZDIzMzdiMjc0NDUzNDJhZGI0OGRjMTZlMjU1NmE0MTFlNDY3M2Q2N2FmNjAwN2RmNmQwY2I4YjI2NDQ=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
