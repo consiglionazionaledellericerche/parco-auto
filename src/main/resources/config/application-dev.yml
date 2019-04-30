@@ -17,7 +17,7 @@ logging:
     level:
         ROOT: DEBUG
         io.github.jhipster: DEBUG
-        si.cnr.it: DEBUG
+        it.cnr.si: DEBUG
 
 spring:
     profiles:
@@ -128,3 +128,5 @@ ace:
     url: "http://acebuntudock.si.cnr.it:5555/api"
     username: app.scrivaniadigitale
     password: bubbazza
+    admin:
+        users: valerio.diego,gianluca.troiani,marco.spasiano

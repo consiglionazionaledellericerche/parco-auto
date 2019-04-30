@@ -16,7 +16,7 @@
 logging:
     level:
         ROOT: INFO
-        si.cnr.it: INFO
+        it.cnr.si: INFO
         io.github.jhipster: INFO
 
 spring:
@@ -136,3 +136,5 @@ ace:
     url: "http://acebuntudock.si.cnr.it:5555/api"
     username: app.scrivaniadigitale
     password: bubbazza
+    admin:
+        users: valerio.diego,gianluca.troiani,marco.spasiano
