@@ -113,3 +113,5 @@ ace:
     url: "http://acebuntudock.si.cnr.it:5555/api"
     username: app.scrivaniadigitale
     password: bubbazza
+    admin:
+        users: admin
