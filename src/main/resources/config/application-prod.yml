@@ -137,4 +137,5 @@ ace:
     username: app.scrivaniadigitale
     password: bubbazza
     admin:
-        users: valerio.diego,gianluca.troiani,marco.spasiano
+        users: valerio.diego,gianluca.troiani,marco.spasiano,roberto.tatarelli
+        superusers: valerio.diego,marco.spasiano
