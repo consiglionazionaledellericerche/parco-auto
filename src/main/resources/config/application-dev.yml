@@ -130,4 +130,4 @@ ace:
     password: bubbazza
     admin:
         users: valerio.diego,gianluca.troiani,marco.spasiano
-        superusers: valerio.diego,marco.spasiano
+        superusers: roberto.tatarelli

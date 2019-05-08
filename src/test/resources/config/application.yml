@@ -115,3 +115,4 @@ ace:
     password: bubbazza
     admin:
         users: admin
+        superusers: admin
