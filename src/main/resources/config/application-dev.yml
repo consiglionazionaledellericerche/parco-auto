@@ -57,10 +57,10 @@ spring:
     liquibase:
         contexts: dev
     mail:
-        host: localhost
+        host: smtp.cnr.it
         port: 25
-        username:
-        password:
+        username: app.parcoauto #inserire username email parcoauto
+        password: '!ParC0AutoCNR#' #inserire password email parcoauto
     messages:
         cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
@@ -99,7 +99,7 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: parcoauto@localhost
+        from: app.parcoauto@cnr.it #inserire email parcoauto
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
