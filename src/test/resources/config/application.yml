@@ -116,3 +116,7 @@ ace:
     admin:
         users: admin
         superusers: admin
+
+cnr:
+    cds:
+        sac: '000'
