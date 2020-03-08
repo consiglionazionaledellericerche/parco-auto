@@ -140,6 +140,3 @@ ace:
     url: "https://api.ace.cnr.it/api"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
-    admin:
-        users: valerio.diego,gianluca.troiani,marco.spasiano
-        superusers: paolo.collacchi
