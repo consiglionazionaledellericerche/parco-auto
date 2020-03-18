@@ -132,10 +132,6 @@ jhipster:
 # ===================================================================
 
 # application:
-#ace:
-#    url: "http://acebuntudock.si.cnr.it:5555/api"
-#    username: app.scrivaniadigitale
-#    password: bubbazza
 ace:
     url: "https://api.ace.cnr.it/api"
     username: app.parcoauto
