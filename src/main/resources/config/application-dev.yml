@@ -134,3 +134,8 @@ ace:
     url: "http://ace-webapp.test.si.cnr.it:5555/api"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
+
+sigla:
+    url: "http://sigla-main.test.si.cnr.it/SIGLA"
+    username: app.parcoauto
+    password: '!ParC0AutoCNR#'
