@@ -139,3 +139,6 @@ sigla:
     url: "http://sigla-main.test.si.cnr.it/SIGLA"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
+
+print:
+    url: "http://sigla-print.test.si.cnr.it"
