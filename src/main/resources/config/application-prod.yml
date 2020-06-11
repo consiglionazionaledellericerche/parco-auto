@@ -136,3 +136,6 @@ ace:
     url: "https://api.ace.cnr.it/api"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
+
+print:
+    url: "http://sigla-print.cedrc.cnr.it:90"
