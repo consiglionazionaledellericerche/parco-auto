@@ -131,7 +131,7 @@ jhipster:
 #    username: app.scrivaniadigitale
 #    password: bubbazza
 ace:
-    url: "http://zuul-server.test.si.cnr.it:5555/api"
+    url: "http://zuul-server.test.si.cnr.it/api"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
 
