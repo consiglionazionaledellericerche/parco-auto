@@ -15,12 +15,12 @@
                     </div>
                     <div class="card-body">
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-11">
                             <div class="form-group">
                                 <label class="form-control-label" jhiTranslate="parcoautoApp.veicoloProprieta.veicolo" for="field_veicolo">Veicolo</label>
                                 <select class="form-control" id="field_veicolo" name="veicolo" [(ngModel)]="veicoloProprieta.veicolo" required>
                                     <option *ngIf="!editForm.value.veicolo" [ngValue]="null" selected></option>
-                                    <option [ngValue]="veicoloOption.id === veicoloProprieta.veicolo?.id ? veicoloProprieta.veicolo : veicoloOption" *ngFor="let veicoloOption of veicolo; trackBy: trackVeicoloById">{{veicoloOption.targa}}</option>
+                                    <option [ngValue]="veicoloOption.id === veicoloProprieta.veicolo?.id ? veicoloProprieta.veicolo : veicoloOption" *ngFor="let veicoloOption of veicolo; trackBy: trackVeicoloById">{{veicoloOption.targa}} - {{veicoloOption.marca}} {{veicoloOption.modello}}</option>
                                 </select>
                             </div>
                             <div [hidden]="!(editForm.controls.veicolo?.dirty && editForm.controls.veicolo?.invalid)">
@@ -30,7 +30,7 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-5">
                             <label class="form-control-label" jhiTranslate="parcoautoApp.veicoloProprieta.libretto" for="field_libretto">Libretto</label>
                             <div>
                                 <div *ngIf="veicoloProprieta.libretto" class="form-text text-danger clearfix">
