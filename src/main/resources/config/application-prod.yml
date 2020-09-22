@@ -48,8 +48,8 @@ spring:
     mail:
         host: localhost
         port: 25
-        username:
-        password:
+        username: app.parcoauto
+        password: '!ParC0AutoCNR#'
     thymeleaf:
         cache: true
 
