@@ -46,7 +46,7 @@ spring:
     liquibase:
         contexts: prod
     mail:
-        host: localhost
+        host: smtp.cnr.it
         port: 25
         username: app.parcoauto
         password: '!ParC0AutoCNR#'
