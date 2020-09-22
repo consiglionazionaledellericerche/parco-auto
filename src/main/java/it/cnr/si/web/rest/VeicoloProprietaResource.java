@@ -94,7 +94,7 @@ public class VeicoloProprietaResource {
         log.debug("inizio creazione assicurazione");
         AssicurazioneVeicolo assicurazioneVeicolo = new AssicurazioneVeicolo();
             assicurazioneVeicolo.setVeicolo(result.getVeicolo());
-            assicurazioneVeicolo.setDataScadenza(LocalDate.now());
+            assicurazioneVeicolo.setDataScadenza(Instant.now());
             assicurazioneVeicolo.setDataInserimento(Instant.now());
             assicurazioneVeicolo.setCompagniaAssicurazione(" ");
             assicurazioneVeicolo.setNumeroPolizza(" ");
@@ -110,7 +110,7 @@ public class VeicoloProprietaResource {
             validazione.setVeicolo(result.getVeicolo());
             validazione.setDescrizione("Inserito nuovo veicolo di Proprietà targa:"+datiVeicoloCompleto);
             validazione.setTipologiaStato("Inserito");
-            validazione.setDataModifica(LocalDate.now());
+            validazione.setDataModifica(Instant.now());
             validazioneResource.createValidazione(validazione);
         log.debug("validazione {}",validazione);
         return ResponseEntity.created(new URI("/api/veicolo-proprietas/" + result.getId()))
@@ -141,7 +141,9 @@ public class VeicoloProprietaResource {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         if (veicoloProprieta.getEtichetta().equals("")) {
-            String etichetta = siglaService.getVehicleInfoByPlate(veicoloProprieta.getVeicolo().getTarga()).get().getEtichetta();
+            String etichetta = siglaService.getVehicleInfoByPlate(veicoloProprieta.getVeicolo().getTarga()).map(
+                Vehicle::getEtichetta
+            ).orElse("");
             veicoloProprieta.setEtichetta(etichetta);
         }
         VeicoloProprieta result = veicoloProprietaRepository.save(veicoloProprieta);
@@ -154,7 +156,7 @@ public class VeicoloProprietaResource {
         validazione.setVeicolo(result.getVeicolo());
         validazione.setDescrizione("Modifica effettuata in veicolo di Proprietà:"+datiVeicoloCompleto);
         validazione.setTipologiaStato("Modifica");
-        validazione.setDataModifica(LocalDate.now());
+        validazione.setDataModifica(Instant.now());
         validazioneResource.createValidazione(validazione);
         log.debug("validazione {}",validazione);
 
@@ -250,7 +252,10 @@ public class VeicoloProprietaResource {
             veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
         }
         log.debug("Da tutti i veicoli: {}",veicoli);
-        if (TARGA.equals("")){
+        if(TARGA == null){
+
+        }
+        else if (TARGA.equals("")){
             TARGA = null;
         }
         if (TARGA != null) {
