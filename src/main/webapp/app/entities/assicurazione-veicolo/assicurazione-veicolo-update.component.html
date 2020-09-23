@@ -97,10 +97,13 @@
                             <div class="form-group col-md-5">
                                 <label class="form-control-label" jhiTranslate="parcoautoApp.assicurazioneVeicolo.dataInserimento" for="field_dataInserimento">Data Inserimento</label>
                                 <div class="d-flex">
-                                    <input id="field_dataInserimento" type="datetime-local" class="form-control" name="dataInserimento" [(ngModel)]="dataInserimento"
+                                   <input id="field_dataInserimento" type="text" class="form-control" mwlFlatpickr name="dataInserimento" [(ngModel)]="dataInserimento"
+                                           [enableTime]="true"
+                                           [time24hr]="true"
+                                           dateFormat="d-m-Y H:i"
                                            required/>
                                 </div>
-                                <div [hidden]="!(editForm.controls.dataInserimento?.dirty && editForm.controls.dataInserimento?.invalid)">
+                                <!--<div [hidden]="!(editForm.controls.dataInserimento?.dirty && editForm.controls.dataInserimento?.invalid)">
                                     <small class="form-text text-danger"
                                            [hidden]="!editForm.controls.dataInserimento?.errors?.required" jhiTranslate="entity.validation.required">
                                         This field is required.
@@ -109,7 +112,7 @@
                                            [hidden]="!editForm.controls.dataInserimento?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
                                         This field should be a date and time.
                                     </small>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="form-group col-md-5">
                                 <label class="form-control-label" jhiTranslate="parcoautoApp.assicurazioneVeicolo.dataScadenza" for="field_dataScadenza">Data Scadenza</label>

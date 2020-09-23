@@ -11,11 +11,12 @@ import {
     assicurazioneVeicoloRoute,
     assicurazioneVeicoloPopupRoute
 } from './';
+import { FlatpickrModule } from 'angularx-flatpickr';
 
 const ENTITY_STATES = [...assicurazioneVeicoloRoute, ...assicurazioneVeicoloPopupRoute];
 
 @NgModule({
-    imports: [ParcoautoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [ParcoautoSharedModule, RouterModule.forChild(ENTITY_STATES), FlatpickrModule.forRoot()],
     declarations: [
         AssicurazioneVeicoloComponent,
         AssicurazioneVeicoloDetailComponent,
