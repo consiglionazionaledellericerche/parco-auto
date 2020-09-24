@@ -70,4 +70,8 @@ export class BolloService {
         });
         return res;
     }
+
+    findVeicolo() {
+        return this.http.get<any>(`${this.resourceUrl}/findVeicolo`);
+    }
 }

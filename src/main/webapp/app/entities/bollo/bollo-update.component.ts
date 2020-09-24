@@ -18,6 +18,7 @@ import { VeicoloService } from 'app/entities/veicolo';
 export class BolloUpdateComponent implements OnInit {
     private _bollo: IBollo;
     isSaving: boolean;
+    veicolo = [];
 
     veicolos: IVeicolo[];
     dataScadenzaDp: any;
@@ -36,12 +37,10 @@ export class BolloUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ bollo }) => {
             this.bollo = bollo;
         });
-        this.veicoloService.query().subscribe(
-            (res: HttpResponse<IVeicolo[]>) => {
-                this.veicolos = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+
+        this.bolloService.findVeicolo().subscribe(veicoloRestituiti => {
+            this.veicolos = veicoloRestituiti;
+        });
     }
 
     byteSize(field) {
