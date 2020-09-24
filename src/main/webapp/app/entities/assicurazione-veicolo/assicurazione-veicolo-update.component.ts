@@ -36,6 +36,10 @@ export class AssicurazioneVeicoloUpdateComponent implements OnInit {
         this.isSaving = false;
         this.activatedRoute.data.subscribe(({ assicurazioneVeicolo }) => {
             this.assicurazioneVeicolo = assicurazioneVeicolo;
+            this.dataInserimento =
+                this.assicurazioneVeicolo.dataInserimento != null
+                    ? this.assicurazioneVeicolo.dataInserimento.format(DATE_TIME_FORMAT)
+                    : null;
         });
         this.veicoloService.query().subscribe(
             (res: HttpResponse<IVeicolo[]>) => {
@@ -44,9 +48,9 @@ export class AssicurazioneVeicoloUpdateComponent implements OnInit {
             (res: HttpErrorResponse) => this.onError(res.message)
         );
 
-         this.assicurazioneVeicoloService.findVeicolo().subscribe(veicoloRestituiti => {
-                            this.veicolo = veicoloRestituiti;
-                        });
+        this.assicurazioneVeicoloService.findVeicolo().subscribe(veicoloRestituiti => {
+            this.veicolo = veicoloRestituiti;
+        });
     }
 
     byteSize(field) {
@@ -67,7 +71,7 @@ export class AssicurazioneVeicoloUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        this.assicurazioneVeicolo.dataInserimento = moment(this.dataInserimento, DATE_TIME_FORMAT);
+        this.assicurazioneVeicolo.dataInserimento = this.dataInserimento != null ? moment(this.dataInserimento, DATE_TIME_FORMAT) : null;
         if (this.assicurazioneVeicolo.id !== undefined) {
             this.subscribeToSaveResponse(this.assicurazioneVeicoloService.update(this.assicurazioneVeicolo));
         } else {
