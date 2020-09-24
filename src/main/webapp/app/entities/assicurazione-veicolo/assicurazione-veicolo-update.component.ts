@@ -41,9 +41,18 @@ export class AssicurazioneVeicoloUpdateComponent implements OnInit {
                     ? this.assicurazioneVeicolo.dataInserimento.format(DATE_TIME_FORMAT)
                     : null;
         });
-        this.veicoloService.query().subscribe(
+        this.veicoloService.query({ filter: 'assicurazioneVeicolo-is-null' }).subscribe(
             (res: HttpResponse<IVeicolo[]>) => {
-                this.veicolos = res.body;
+                if (!this.assicurazioneVeicolo.veicolo || !this.assicurazioneVeicolo.veicolo.id) {
+                    this.veicolos = res.body;
+                } else {
+                    this.veicoloService.find(this.assicurazioneVeicolo.veicolo.id).subscribe(
+                        (subRes: HttpResponse<IVeicolo>) => {
+                            this.veicolos = [subRes.body].concat(res.body);
+                        },
+                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
+                    );
+                }
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );

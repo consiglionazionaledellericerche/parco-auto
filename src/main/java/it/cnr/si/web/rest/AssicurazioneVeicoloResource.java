@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,8 @@ public class AssicurazioneVeicoloResource {
     private AssicurazioneVeicoloRepository assicurazioneVeicoloRepository;
 
     private MailService mailService;
+
+    private String TARGA;
 
     public AssicurazioneVeicoloResource(MailService mailService) {
         this.mailService = mailService;
@@ -122,6 +125,7 @@ public class AssicurazioneVeicoloResource {
         } else {
             page = assicurazioneVeicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
         }
+        TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/assicurazione-veicolos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -137,6 +141,7 @@ public class AssicurazioneVeicoloResource {
     public ResponseEntity<AssicurazioneVeicolo> getAssicurazioneVeicolo(@PathVariable Long id) {
         log.debug("REST request to get AssicurazioneVeicolo : {}", id);
         Optional<AssicurazioneVeicolo> assicurazioneVeicolo = assicurazioneVeicoloRepository.findById(id);
+        TARGA = assicurazioneVeicoloRepository.findById(id).get().getVeicolo().getTarga();
         return ResponseUtil.wrapOrNotFound(assicurazioneVeicolo);
     }
 
@@ -162,12 +167,31 @@ public class AssicurazioneVeicoloResource {
     public ResponseEntity<List<Veicolo>> findVeicolo() {
         String sede = SecurityUtils.getCdS();
         List<Veicolo> veicoli;
+        List<Veicolo> veicoliRimasti;
+
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
             veicoli = veicoloRepository.findByDeletedFalse();
+            veicoliRimasti = veicoloRepository.findByDeletedFalse();
         } else {
             veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
         }
+        if(TARGA == null){
 
-        return ResponseEntity.ok(veicoli);
+        }
+        else if (TARGA.equals("")){
+            TARGA = null;
+        }
+        if (TARGA != null) {
+            Iterator i = veicoli.iterator();
+            while (i.hasNext()) {
+                Object v = i.next();
+                if (((Veicolo) v).getTarga().equals(TARGA)) {
+                } else {
+                    veicoliRimasti.remove(v);
+                }
+            }
+        }
+        return ResponseEntity.ok(veicoliRimasti);
     }
 }
