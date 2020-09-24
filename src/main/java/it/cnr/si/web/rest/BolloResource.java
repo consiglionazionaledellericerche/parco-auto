@@ -2,7 +2,11 @@ package it.cnr.si.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import it.cnr.si.domain.Bollo;
+import it.cnr.si.domain.Veicolo;
 import it.cnr.si.repository.BolloRepository;
+import it.cnr.si.repository.VeicoloRepository;
+import it.cnr.si.security.AuthoritiesConstants;
+import it.cnr.si.security.SecurityUtils;
 import it.cnr.si.service.MailService;
 import it.cnr.si.web.rest.errors.BadRequestAlertException;
 import it.cnr.si.web.rest.util.HeaderUtil;
@@ -23,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.ZonedDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +40,16 @@ public class BolloResource {
 
     private final Logger log = LoggerFactory.getLogger(BolloResource.class);
 
+    @Autowired
+    private VeicoloRepository veicoloRepository;
+
     private static final String ENTITY_NAME = "bollo";
 
     private final BolloRepository bolloRepository;
 
     private final MailService mailService;
+
+    private String TARGA;
 
     public BolloResource(BolloRepository bolloRepository, MailService mailService) {
         this.bolloRepository = bolloRepository;
@@ -112,6 +122,7 @@ public class BolloResource {
     public ResponseEntity<List<Bollo>> getAllBollos(Pageable pageable) {
         log.debug("REST request to get a page of Bollos");
         Page<Bollo> page = bolloRepository.findAll(pageable);
+        TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bollos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -127,6 +138,7 @@ public class BolloResource {
     public ResponseEntity<Bollo> getBollo(@PathVariable Long id) {
         log.debug("REST request to get Bollo : {}", id);
         Optional<Bollo> bollo = bolloRepository.findById(id);
+        TARGA = bolloRepository.findById(id).get().getVeicolo().getTarga();
         return ResponseUtil.wrapOrNotFound(bollo);
     }
 
@@ -143,5 +155,40 @@ public class BolloResource {
 
         bolloRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    //Per richiamare Veicoli
+    @GetMapping("/bollos/findVeicolo")
+    @Timed
+    public ResponseEntity<List<Veicolo>> findVeicolo() {
+        String sede = SecurityUtils.getCdS();
+        List<Veicolo> veicoli;
+        List<Veicolo> veicoliRimasti;
+
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+            veicoli = veicoloRepository.findByDeletedFalse();
+            veicoliRimasti = veicoloRepository.findByDeletedFalse();
+        } else {
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+        }
+        if(TARGA == null){
+
+        }
+        else if (TARGA.equals("")){
+            TARGA = null;
+        }
+        if (TARGA != null) {
+            Iterator i = veicoli.iterator();
+            while (i.hasNext()) {
+                Object v = i.next();
+                if (((Veicolo) v).getTarga().equals(TARGA)) {
+                } else {
+                    veicoliRimasti.remove(v);
+                }
+            }
+        }
+        return ResponseEntity.ok(veicoliRimasti);
     }
 }
