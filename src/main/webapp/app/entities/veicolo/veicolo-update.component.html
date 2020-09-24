@@ -117,7 +117,7 @@
                         <div class="form-group col-md-6">
                             <label class="form-control-label" jhiTranslate="parcoautoApp.veicolo.responsabile" for="field_responsabile">Responsabile</label>
                             <input type="text" class="form-control" name="responsabile" id="field_responsabile" [ngbTypeahead]="search" [class.is-invalid]="searchFailed"
-                                   [(ngModel)]="veicolo.responsabile" placeholder="search" required/>
+                                   [(ngModel)]="veicolo.responsabile" placeholder="search" [editable]="false" required/>
                             <div [hidden]="!(editForm.controls.responsabile?.dirty && editForm.controls.responsabile?.invalid)">
                                 <small class="form-text text-danger"
                                        [hidden]="!editForm.controls.responsabile?.errors?.required" jhiTranslate="entity.validation.required">
