@@ -37,7 +37,6 @@ export class BolloUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ bollo }) => {
             this.bollo = bollo;
         });
-
         this.bolloService.findVeicolo().subscribe(veicoloRestituiti => {
             this.veicolos = veicoloRestituiti;
         });
