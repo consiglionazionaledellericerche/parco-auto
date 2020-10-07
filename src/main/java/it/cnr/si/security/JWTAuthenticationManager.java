@@ -3,6 +3,7 @@ package it.cnr.si.security;
 import feign.FeignException;
 import it.cnr.si.service.AceService;
 import it.cnr.si.service.AuthService;
+import it.cnr.si.service.dto.anagrafica.enums.TipoRuolo;
 import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,12 +49,8 @@ public class JWTAuthenticationManager implements AuthenticationManager {
             List<GrantedAuthority> authorities =
                 aceService.ruoliAttivi(principal).stream()
                     .filter(ruolo -> ruolo.getContesto().getSigla().equals(contestoACE))
-                    .map(a -> new SimpleGrantedAuthority(
-                        Optional.ofNullable(a.getSigla())
-                            .map(s -> s.substring(0, s.indexOf("#")))
-                            .orElse(null)
-                        )
-                    ).collect(Collectors.toList());
+                    .map(a -> new SimpleGrantedAuthority(Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER)))
+                    .collect(Collectors.toList());
             authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
             User utente = new User(principal, credentials, authorities);
 
