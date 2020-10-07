@@ -7,6 +7,7 @@ import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,9 @@ public class JWTAuthenticationManager implements AuthenticationManager {
     @Autowired
     private AceService aceService;
 
+    @Value("${ace.contesto}")
+    private String contestoACE;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -43,12 +47,9 @@ public class JWTAuthenticationManager implements AuthenticationManager {
 
             List<GrantedAuthority> authorities =
                 aceService.ruoliAttivi(principal).stream()
-                    .filter(ruolo -> ruolo.getContesti().stream()
-                        .anyMatch(r -> r.getSigla().equals("parcoauto-app")))
+                    .filter(ruolo -> ruolo.getContesto().equals(contestoACE))
                     .map(a -> new SimpleGrantedAuthority(
-                            Optional.ofNullable(a.getSigla())
-                                .map(s -> s.substring(0, s.indexOf("#")))
-                                .orElse(null)
+                            Optional.ofNullable(a.getSigla()).orElse(null)
                         )
                     ).collect(Collectors.toList());
             authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
