@@ -113,6 +113,7 @@ ace:
     url: "http://zuul-server.test.si.cnr.it/api"
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
+    contesto: parcoauto-app
 
 sigla:
     url: "http://sigla-main.test.si.cnr.it/SIGLA"
