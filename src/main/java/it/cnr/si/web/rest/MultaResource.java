@@ -2,7 +2,12 @@ package it.cnr.si.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import it.cnr.si.domain.Multa;
+import it.cnr.si.domain.Veicolo;
+import it.cnr.si.repository.VeicoloRepository;
+import it.cnr.si.security.AuthoritiesConstants;
+import it.cnr.si.security.SecurityUtils;
 import it.cnr.si.repository.MultaRepository;
+import it.cnr.si.repository.VeicoloRepository;
 import it.cnr.si.service.MailService;
 import it.cnr.si.web.rest.errors.BadRequestAlertException;
 import it.cnr.si.web.rest.util.HeaderUtil;
@@ -24,6 +29,7 @@ import java.net.URISyntaxException;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,11 +42,16 @@ public class MultaResource {
 
     private final Logger log = LoggerFactory.getLogger(MultaResource.class);
 
+    @Autowired
+    private VeicoloRepository veicoloRepository;
+
     private static final String ENTITY_NAME = "multa";
 
     private final MultaRepository multaRepository;
 
     private final MailService mailService;
+
+    private String TARGA;
 
     public MultaResource(MultaRepository multaRepository, MailService mailService) {
         this.multaRepository = multaRepository;
@@ -118,6 +129,7 @@ public class MultaResource {
     public ResponseEntity<List<Multa>> getAllMultas(Pageable pageable) {
         log.debug("REST request to get a page of Multas");
         Page<Multa> page = multaRepository.findAll(pageable);
+        TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/multas");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -133,6 +145,7 @@ public class MultaResource {
     public ResponseEntity<Multa> getMulta(@PathVariable Long id) {
         log.debug("REST request to get Multa : {}", id);
         Optional<Multa> multa = multaRepository.findById(id);
+        TARGA = multaRepository.findById(id).get().getVeicolo().getTarga();
         return ResponseUtil.wrapOrNotFound(multa);
     }
 
@@ -150,4 +163,40 @@ public class MultaResource {
         multaRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+    //Per richiamare Veicoli
+    @GetMapping("/multas/findVeicolo")
+    @Timed
+    public ResponseEntity<List<Veicolo>> findVeicolo() {
+        String sede = SecurityUtils.getCdS();
+        List<Veicolo> veicoli;
+        List<Veicolo> veicoliRimasti;
+
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+            veicoli = veicoloRepository.findByDeletedFalse();
+            veicoliRimasti = veicoloRepository.findByDeletedFalse();
+        } else {
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+        }
+        if(TARGA == null){
+
+        }
+        else if (TARGA.equals("")){
+            TARGA = null;
+        }
+        if (TARGA != null) {
+            Iterator i = veicoli.iterator();
+            while (i.hasNext()) {
+                Object v = i.next();
+                if (((Veicolo) v).getTarga().equals(TARGA)) {
+                } else {
+                    veicoliRimasti.remove(v);
+                }
+            }
+        }
+        return ResponseEntity.ok(veicoliRimasti);
+    }
+
 }
