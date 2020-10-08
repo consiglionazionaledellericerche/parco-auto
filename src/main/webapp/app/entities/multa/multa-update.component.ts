@@ -22,6 +22,7 @@ export class MultaUpdateComponent implements OnInit {
     veicolos: IVeicolo[];
     dataMultaDp: any;
     visionatoMulta: string;
+    veicolo = [];
 
     constructor(
         private dataUtils: JhiDataUtils,
@@ -36,12 +37,9 @@ export class MultaUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ multa }) => {
             this.multa = multa;
         });
-        this.veicoloService.query().subscribe(
-            (res: HttpResponse<IVeicolo[]>) => {
-                this.veicolos = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.multaService.findVeicolo().subscribe(veicoloRestituiti => {
+            this.veicolos = veicoloRestituiti;
+        });
     }
 
     byteSize(field) {
