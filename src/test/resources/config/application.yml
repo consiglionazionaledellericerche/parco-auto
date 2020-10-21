@@ -120,5 +120,10 @@ sigla:
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
 
+siper:
+    url: "http://siper.test.si.cnr.it"
+    username: ${ace.username}
+    password: ${ace.password}
+
 print:
     url: "http://sigla-print.test.si.cnr.it"

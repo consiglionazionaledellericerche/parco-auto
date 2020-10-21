@@ -138,5 +138,10 @@ ace:
     password: '!ParC0AutoCNR#'
     contesto: parcoauto-app
 
+siper:
+    url: "https://siper.cnr.it"
+    username: ${ace.username}
+    password: ${ace.password}
+
 print:
     url: "http://sigla-print.cedrc.cnr.it:90"

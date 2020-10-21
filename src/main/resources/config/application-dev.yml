@@ -133,6 +133,10 @@ ace:
     username: app.parcoauto
     password: '!ParC0AutoCNR#'
     contesto: parcoauto-app
+siper:
+    url: "http://siper.test.si.cnr.it"
+    username: ${ace.username}
+    password: ${ace.password}
 
 sigla:
     url: "http://sigla-main.test.si.cnr.it/SIGLA"
