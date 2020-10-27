@@ -105,7 +105,7 @@ public class ValidazioneResource {
         log.debug("REST request to get a page of Validaziones");
         Page<Validazione> page;
         String sede = SecurityUtils.getCdS();
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN))
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = validazioneRepository.findAll(pageable);
         else
             page = validazioneRepository.findByIstituto(sede.concat("%"), pageable);

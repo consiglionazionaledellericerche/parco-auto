@@ -12,6 +12,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 })
 export class JhiLoginModalComponent implements AfterViewInit {
     authenticationError: boolean;
+    authenticationMessage = 'login.messages.error.authentication';
     password: string;
     rememberMe: boolean;
     username: string;
@@ -70,8 +71,9 @@ export class JhiLoginModalComponent implements AfterViewInit {
                     this.router.navigate([redirect]);
                 }
             })
-            .catch(() => {
+            .catch((error: any) => {
                 this.authenticationError = true;
+                this.authenticationMessage = error.error.detail;
             });
     }
 

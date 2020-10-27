@@ -56,7 +56,7 @@
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button [disabled]="validazione.userDirettore != null" *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
+                        <button [disabled]="validazione.userDirettore != null" *jhiHasAnyAuthority="['ROLE_SUPERUSER', 'ROLE_ADMIN']" type="submit"
                                 [routerLink]="['/validazione', validazione.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>

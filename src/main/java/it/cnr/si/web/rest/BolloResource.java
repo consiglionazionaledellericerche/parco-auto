@@ -166,7 +166,7 @@ public class BolloResource {
         List<Veicolo> veicoli;
         List<Veicolo> veicoliRimasti;
 
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoli = veicoloRepository.findByDeletedFalse();
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
         } else {

@@ -132,7 +132,7 @@ public class VeicoloNoleggioResource {
         }
         String sede = SecurityUtils.getCdS();
 
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN) ||
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
             veicoloNoleggio.getVeicolo().getIstituto().startsWith(sede))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -190,7 +190,7 @@ public class VeicoloNoleggioResource {
         String sede = SecurityUtils.getCdS();
 
         Page<VeicoloNoleggio> page;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN))
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = veicoloNoleggioRepository.findAllActive(false, pageable);
         else
             page = veicoloNoleggioRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
@@ -246,7 +246,7 @@ public class VeicoloNoleggioResource {
 
         String sede = SecurityUtils.getCdS();
 
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
             veicoli = veicoloRepository.findByDeletedFalse();
         } else {
