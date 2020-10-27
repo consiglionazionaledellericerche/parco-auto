@@ -9,7 +9,8 @@
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare."
+                "authentication": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare.",
+                "insufficient-authentication": "<strong>Accesso riconosciuto</strong> l'utenza però non possiede alcun profilo di accesso, contattare l'amministratore del sistema."
             }
         },
         "password" : {

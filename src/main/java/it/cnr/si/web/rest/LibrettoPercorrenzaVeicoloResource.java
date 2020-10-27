@@ -80,7 +80,7 @@ public class LibrettoPercorrenzaVeicoloResource {
         }
         String sede = SecurityUtils.getCdS();
 
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER,AuthoritiesConstants.ADMIN) ||
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
             librettoPercorrenzaVeicolo.getVeicolo().getIstituto().startsWith(sede))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -103,7 +103,7 @@ public class LibrettoPercorrenzaVeicoloResource {
         String sede = SecurityUtils.getCdS();
 
         Page<LibrettoPercorrenzaVeicolo> page;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN))
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = librettoPercorrenzaVeicoloRepository.findByDeleted(false, pageable);
         else
             page = librettoPercorrenzaVeicoloRepository.findByIstitutoStartsWithAndDeteled(sede.concat("%"), false, pageable);
@@ -150,7 +150,7 @@ public class LibrettoPercorrenzaVeicoloResource {
 
         List<Veicolo> veicoli;
 
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN))
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             veicoli = veicoloRepository.findByDeletedFalse();
         else
             veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);

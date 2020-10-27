@@ -120,7 +120,7 @@ public class AssicurazioneVeicoloResource {
         log.debug("REST request to get a page of AssicurazioneVeicolos");
         String sede = SecurityUtils.getCdS();
         Page<AssicurazioneVeicolo> page;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             page = assicurazioneVeicoloRepository.findByDeleted(false, pageable);
         } else {
             page = assicurazioneVeicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
@@ -169,7 +169,7 @@ public class AssicurazioneVeicoloResource {
         List<Veicolo> veicoli;
         List<Veicolo> veicoliRimasti;
 
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoli = veicoloRepository.findByDeletedFalse();
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
         } else {

@@ -129,7 +129,7 @@ public class VeicoloResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         String sede = SecurityUtils.getCdS();
-        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN) &&
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
             !veicolo.getIstituto().startsWith(sede)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -164,7 +164,7 @@ public class VeicoloResource {
         String sede = SecurityUtils.getCdS();
         //allVeicoli();throws JSONException
         Page<Veicolo> veicoli;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoli = veicoloRepository.findByDeletedFalse(pageable);
         } else {
             veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
@@ -189,7 +189,7 @@ public class VeicoloResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         String sede = SecurityUtils.getCdS();
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN) ||
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
             veicolo.get().getIstituto().startsWith(sede))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -211,7 +211,7 @@ public class VeicoloResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         String sede = SecurityUtils.getCdS();
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN) || veicolo.get().getIstituto().startsWith(sede))) {
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || veicolo.get().getIstituto().startsWith(sede))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Veicolo vei = veicolo.get();
@@ -251,7 +251,7 @@ public class VeicoloResource {
             .stream()
             .filter(entitaOrganizzativa -> Optional.ofNullable(entitaOrganizzativa.getCdsuo()).isPresent())
             .filter(entitaOrganizzativaWebDto -> {
-                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN)) {
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
                     return true;
                 } else {
                     return entitaOrganizzativaWebDto.getCdsuo().startsWith(sede);
@@ -270,7 +270,7 @@ public class VeicoloResource {
     public ResponseEntity<Map<String, Object>> allVeicoli() throws IOException {
         String sede = SecurityUtils.getCdS();
         List<Veicolo> veicoliAll;
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.SUPERUSER, AuthoritiesConstants.ADMIN))) {
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
             veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede, false);
         } else {
             veicoliAll = veicoloRepository.findAll();
