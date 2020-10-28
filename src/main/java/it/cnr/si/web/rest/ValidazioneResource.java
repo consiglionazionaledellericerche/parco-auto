@@ -24,6 +24,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -141,5 +142,24 @@ public class ValidazioneResource {
 
         validazioneRepository.deleteById(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * VALIDAZIONE  /valida/:id : valida the "id" validazione.
+     *
+     * @param id the id of the validazione to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @GetMapping("/validaziones/valida/{id}")
+    @Timed
+    public ResponseEntity<Void> valida(@PathVariable Long id) {
+        log.debug("REST request to valida: {}", id);
+        Validazione validazione = validazioneRepository.findById(id).get();
+        log.debug("validazione: {}",validazione);
+        String user = ace.getUtente(SecurityUtils.getCurrentUserLogin().get()).getUsername();
+        validazione.setUserDirettore(user);
+        validazione.setDataValidazioneDirettore(ZonedDateTime.now());
+        validazioneRepository.save(validazione);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString())).build();
     }
 }
