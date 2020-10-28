@@ -25,7 +25,8 @@
             "note": "Note",
             "idFlusso": "Id Flusso",
             "descrizione": "Descrizione",
-            "veicolo": "Veicolo"
+            "veicolo": "Veicolo",
+            "valida": "Valida"
         }
     }
 }

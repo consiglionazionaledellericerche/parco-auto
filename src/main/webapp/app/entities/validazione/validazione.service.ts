@@ -74,4 +74,9 @@ export class ValidazioneService {
         });
         return res;
     }
+
+    valida(id: number): Observable<HttpResponse<any>> {
+        console.log('entriiiii');
+        return this.http.get<any>(`${this.resourceUrl}/valida/${id}`, { observe: 'response' });
+    }
 }

@@ -138,4 +138,11 @@ export class ValidazioneComponent implements OnInit, OnDestroy {
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
+
+    valida(id: number) {
+        this.validazioneService.valida(id).subscribe(response => {
+            console.log(response);
+            this.loadAll();
+        });
+    }
 }

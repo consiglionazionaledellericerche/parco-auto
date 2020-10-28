@@ -112,7 +112,8 @@
             "edit": "Modifica",
             "open": "Open",
             "save": "Salva",
-            "view": "Visualizza"
+            "view": "Visualizza",
+            "valida": "Valida"
         },
         "detail": {
             "field": "Campo",
