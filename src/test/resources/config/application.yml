@@ -112,13 +112,13 @@ jhipster:
 ace:
     url: "http://zuul-server.test.si.cnr.it/api"
     username: app.parcoauto
-    password: '!ParC0AutoCNR#'
+    password: 'changeit'
     contesto: parcoauto-app
 
 sigla:
     url: "http://sigla-main.test.si.cnr.it/SIGLA"
     username: app.parcoauto
-    password: '!ParC0AutoCNR#'
+    password: ${ace.password}
 
 siper:
     url: "http://siper.test.si.cnr.it"
