@@ -69,18 +69,6 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <!--<li>-->
-                    <!--<a class="dropdown-item" routerLink="veicolo-noleggio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">-->
-                    <!--<fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>-->
-                    <!--<span jhiTranslate="global.menu.entities.veicoloNoleggio">Veicolo Noleggio</span>-->
-                    <!--</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                    <!--<a class="dropdown-item" routerLink="veicolo-proprieta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">-->
-                    <!--<fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>-->
-                    <!--<span jhiTranslate="global.menu.entities.veicoloProprieta">Veicolo Proprietà</span>-->
-                    <!--</a>-->
-                    <!--</li>-->
                     <li>
                         <a class="dropdown-item" routerLink="multa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'ban'" [fixedWidth]="true"></fa-icon>
@@ -93,15 +81,9 @@
                             <!--<span jhiTranslate="global.menu.entities.bollo">Bollo</span>-->Bollo
                         </a>
                     </li>
-                    <!--<li>
-                        <a class="dropdown-item" routerLink="cancellazione-pra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.cancellazionePra">Cancellazione Pra</span>
-                        </a>
-                    </li>-->
-                    <li>
+                    <li *jhiHasAnyAuthority="['ROLE_SUPERUSER','ROLE_ADMIN']">
                         <a class="dropdown-item" routerLink="validazione" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
+                            <fa-icon [icon]="'check-double'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.validazione">Validazione</span>-->Validazione
                         </a>
                     </li>
