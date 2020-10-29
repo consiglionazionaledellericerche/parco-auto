@@ -1,0 +1,12 @@
+spring:
+    application:
+        name: parcoauto
+    cloud:
+        config:
+            server:
+                bootstrap: true
+                git:
+                    uri: http://git.si.cnr.it/devops/configuration-repo.git
+                    searchPaths: '{application}'
+                    username: parcoauto
+                    password: XChrgLhNgR7NpJ6pgMxZ
