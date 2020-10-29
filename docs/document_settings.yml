@@ -1,0 +1,12 @@
+--- 
+document:
+  name: "Parco Auto"
+  description: "Sistema di inserimento per l'anagrafica del Parco Auto del CNR"
+  github_user: consiglionazionaledellericerche
+  github_repo: parco-auto
+  github_version: master/docs
+  downloads:
+    - type: pdf
+      url: Manuale-Parco-Auto.pdf
+    - type: epub
+      url: Manuale-Parco-Auto.epub
