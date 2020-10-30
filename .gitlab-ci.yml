@@ -36,7 +36,7 @@ maven-deploy:
 
 maven-install:
   stage: deploy
-  image: maven:alpine
+  image: maven:3-jdk-8
   script: "mvn clean install $MAVEN_CLI_OPTS"
   artifacts:
     paths:
@@ -47,9 +47,7 @@ maven-install:
 
 maven-deploy-tag:
   stage: deploy
-  image: maven:alpine
-  before_script:
-    - apk add --update nodejs nodejs-npm && rm -rf /var/cache/apk/*
+  image: maven:3-jdk-8
   script: "mvn clean deploy $MAVEN_CLI_OPTS -Pprod -DskipTests"
   artifacts:
     paths:
@@ -118,7 +116,7 @@ catapult-deploy-image:
 #il deploy su maven central dal tag solo se il deploy della release è fallito per qualche motivo.
 perform-maven-central:
   stage: release
-  image: maven:alpine
+  image: maven:3-jdk-8
   script:
     # Add gpg private key
     - 'which gnupg || ( apk add --update gnupg && rm -rf /var/cache/apk/*)'
