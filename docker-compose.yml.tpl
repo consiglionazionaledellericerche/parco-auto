@@ -11,11 +11,7 @@ services:
             - "sigla-print.test.si.cnr.it:150.146.206.186"
         environment:
             - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8787
-            - SPRING_PROFILES_ACTIVE=dev,swagger
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://parco-auto-postgresql:5432/parcoauto
-            - SPRING_DATASOURCE_PASSWORD=parcoautopw
-            - SPRING_JPA_DATABASE_PLATFORM=io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
-            - SPRING_JPA_DATABASE=POSTGRESQL
+            - SPRING_PROFILES_ACTIVE=preprod,swagger
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
         labels:
             - SERVICE_NAME=##{SERVICE_NAME}##
