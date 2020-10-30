@@ -136,10 +136,10 @@ perform-maven-release-maven-central:
   stage: release
   image: maven:3-jdk-8
   script:
-    - 'which git || (apk add --update git && rm -rf /var/cache/apk/*)'
+    - 'which git || (apt-get install git && apt-get clean all)'
     # Install ssh-agent if not already installed, it is required by Docker.
     # (change apt-get to yum if you use a CentOS-based image)
-    - 'which ssh-agent || ( apk add --update openssh-client && rm -rf /var/cache/apk/*)'
+    - 'which ssh-agent || (apt-get install openssh-client && apt-get clean all)'
     # Run ssh-agent (inside the build environment)
     - eval $(ssh-agent -s)
 
@@ -157,7 +157,7 @@ perform-maven-release-maven-central:
     - git checkout -B "$CI_BUILD_REF_NAME"
 
     # Add gpg private key
-    - 'which gnupg || ( apk add --update gnupg && rm -rf /var/cache/apk/*)'
+    - 'which gnupg || (apt-get install gnupg && apt-get clean all)'
     - gpg -v --list-keys
     - echo "pinentry-mode loopback" > /root/.gnupg/gpg.conf
     - echo "allow-loopback-pinentry" > /root/.gnupg/gpg-agent.conf
