@@ -9,7 +9,7 @@ dalla quale si potrà visionare l’elenco di tutti i veicoli della Struttura se
 
    	Elenco Veicoli
 
-remendo su “Aggiungi un nuovo veicolo” si potrà inserire un nuovo veicolo.
+Premendo su “Aggiungi un nuovo veicolo” si potrà inserire un nuovo veicolo.
 Le textbox segnate in rosso sono obbligatorie.
 Per il responsabile occorre inserire il nome o il cognome ma comunque verrà salvato nel formato “nome.cognome” della
 persona interessata e comparirà in automatico la lista delle persone con quel nome da selezionare.
