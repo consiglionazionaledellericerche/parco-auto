@@ -16,15 +16,10 @@ https://parcoauto.cnr.it
 
 **GESTIONE UTENZA**
 
-Per tale procedura verranno gestite centralmente due tipologie di
-utenze:
+Per tale procedura verranno gestite centralmente due tipologie di utenze:
 
-DIRETTORE ad uso esclusivo del Direttore/Dirigente/Responsabile della
-struttura
-
-AMMINISTRATORE UTENTE collegato con l’utenza del Segretario
-Amministrativo il quale potrà a sua volta creare nuove utenza per dare
-ad altri soggetti l’operatività sul programma.
+- DIRETTORE ad uso esclusivo del Direttore/Dirigente/Responsabile della struttura
+- UTENTE abilitato all'inserimento collegato con l’utenza del Segretario Amministrativo.
 
 .. toctree::
   :numbered:
