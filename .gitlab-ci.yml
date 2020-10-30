@@ -134,13 +134,12 @@ perform-maven-central:
 #la release è opzionale e manuale.
 perform-maven-release-maven-central:
   stage: release
-  image: maven:alpine
+  image: maven:3-jdk-8
   script:
     - 'which git || (apk add --update git && rm -rf /var/cache/apk/*)'
     # Install ssh-agent if not already installed, it is required by Docker.
     # (change apt-get to yum if you use a CentOS-based image)
     - 'which ssh-agent || ( apk add --update openssh-client && rm -rf /var/cache/apk/*)'
-    - 'which nodejs || (apk add --update nodejs nodejs-npm && rm -rf /var/cache/apk/*)'
     # Run ssh-agent (inside the build environment)
     - eval $(ssh-agent -s)
 
