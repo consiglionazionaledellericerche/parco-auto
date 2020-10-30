@@ -1,6 +1,6 @@
 VEICOLO NOLEGGIO
 ================
-
+.. _elenco_veicolo_noleggio:
 .. figure:: media/image8.png
 	:alt: Elenco Veicoli a Noleggio
 
@@ -10,8 +10,9 @@ PRIMA CODIFICA DI UN VEICOLO A NOLEGGIO
 ---------------------------------------
 
 Per la codifica dei un veicolo a noleggio dal menù “Elenco funzionalità” occorre cliccare sull’apposito campo “Veicolo Noleggio”
-e cliccare su “Aggiungi un nuovo Veicolo a Noleggio” (fig. 7).
+e cliccare su “Aggiungi un nuovo Veicolo a Noleggio” (:numref:`elenco_veicolo_noleggio`).
 
+.. _nuovo_veicolo_noleggio:
 .. figure:: media/image9.png
 	:alt: Nuovo Veicolo a Noleggio
 
@@ -28,7 +29,4 @@ Dalla sezione “Veicolo a noleggio” del menù “Elenco funzionalità” sar�
 veicoli a noleggio il veicolo di interesse e cliccare sul tasto “Modifica”.
 
 Si aprirà il form di modifica del veicolo del quale si dovranno compilare la sottosezione “Periodo” indicato
-la data di cessazione anticipata oppure la sottosezione “Proroga noleggio” indicando i dati relativi. (fig. 8).
-
-
-
+la data di cessazione anticipata oppure la sottosezione “Proroga noleggio” indicando i dati relativi. (:numref:`nuovo_veicolo_noleggio`).

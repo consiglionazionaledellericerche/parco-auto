@@ -10,6 +10,10 @@ Sistema per l’inserimento del Parco Auto del Consiglio Nazionale delle Ricerch
 
 https://parcoauto.cnr.it
 
+.. sectionauthor::  Valerio Diego valerio.diego@cnr.it
+.. sectionauthor::  Marco Spasiano marco.spasiano@cnr.it
+.. sectionauthor::  Ufficio Ragioneria e Affari Fiscali segreteria.uraf@cnr.it
+
 **GESTIONE UTENZA**
 
 Per tale procedura verranno gestite centralmente due tipologie di

@@ -7,15 +7,17 @@ Per inserire i dati del bollo riferiti ad un veicolo dal menù “Elenco Funzion
 INSERIMENTO DATI BOLLO AUTO (primo periodo)
 -------------------------------------------
 
-Selezionare il veicolo dall’elenco dei veicoli della struttura e cliccare sul tasto modifica (fig. 14)
+Selezionare il veicolo dall’elenco dei veicoli della struttura e cliccare sul tasto modifica (:numref:`elenco_bollo`)
 
+.. _elenco_bollo:
 .. figure:: media/image15.png
 	:alt: Elenco Bollo
 
    	Elenco Bollo
 
-Completare i dati mancanti (fig.15)
+Completare i dati mancanti (:numref:`nuovo_bollo`)
 
+.. _nuovo_bollo:
 .. figure:: media/image16.png
 	:alt: Modifica di un Bollo
 
@@ -25,8 +27,9 @@ Dopo il salvataggio il bollo comparirà nella lista dei bolli per ogni veicolo d
 
 INSERIMENTO DATI BOLLO AUTO (periodi successivi al primo)
 ---------------------------------------------------------
-Per inserire i dati del bollo per gli anni successivi al primo occorre premere il pulsante “Aggiungi un nuovo Bollo” all’interno della funzionalità “Bollo” (fig.15) e selezionare dal menù a tendina “Veicolo” il veicolo a cui è riferito il bollo, inserendo poi tutti i campi richiesti.
+Per inserire i dati del bollo per gli anni successivi al primo occorre premere il pulsante “Aggiungi un nuovo Bollo”
+all’interno della funzionalità “Bollo” (:numref:`elenco_bollo`) e selezionare dal menù a tendina “Veicolo” il veicolo
+a cui è riferito il bollo, inserendo poi tutti i campi richiesti.
 
-Dopo il salvataggio il bollo comparirà nella lista dei bolli per ogni veicolo della Struttura e potrà essere visualizzato, modificato o eliminato (fig.16).
-
-
+Dopo il salvataggio il bollo comparirà nella lista dei bolli per ogni veicolo della Struttura e potrà essere visualizzato,
+modificato o eliminato (:numref:`elenco_bollo`).
