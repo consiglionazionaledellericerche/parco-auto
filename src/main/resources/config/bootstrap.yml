@@ -10,3 +10,6 @@ spring:
                     searchPaths: '{application}'
                     username: parcoauto
                     password: XChrgLhNgR7NpJ6pgMxZ
+            allowOverride: true
+            overrideNone: true
+            overrideSystemProperties: false
