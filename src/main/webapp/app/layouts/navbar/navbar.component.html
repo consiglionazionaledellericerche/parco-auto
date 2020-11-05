@@ -167,6 +167,7 @@
                     </li>
                 </ul>
             </li>
+            <!--
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>
@@ -217,7 +218,6 @@
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
                         </a>
                     </li>
-                    <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                     <li *ngIf="!inProduction">
                         <a class="dropdown-item" href='./h2-console' target="_tab" (click)="collapseNavbar()">
                             <fa-icon [icon]="'hdd'" [fixedWidth]="true"></fa-icon>
@@ -226,6 +226,7 @@
                     </li>
                 </ul>
             </li>
+            -->
             <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" (click)="logout()" id="logoutbis">
                     <fa-icon [icon]="'sign-out-alt'" [fixedWidth]="true"></fa-icon>
