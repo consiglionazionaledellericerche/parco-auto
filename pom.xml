@@ -1191,6 +1191,41 @@
                 </dependency>
             </dependencies>
         </profile>
+        <profile>
+            <id>docs</id>
+            <properties>
+                <timestamp>${maven.build.timestamp}</timestamp>
+                <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
+                <scm.plugin.file.list>docs/conf.py</scm.plugin.file.list>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.code.maven-replacer-plugin</groupId>
+                        <artifactId>maven-replacer-plugin</artifactId>
+                        <version>1.3.5</version>
+                        <executions>
+                            <execution>
+                                <id>replace version on conf.py</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>replace</goal>
+                                </goals>
+                                <configuration>
+                                    <filesToInclude>docs/conf.py</filesToInclude>
+                                    <replacements>
+                                        <replacement>
+                                            <token>release.*</token>
+                                            <value>release = '${project.version}'</value>
+                                        </replacement>
+                                    </replacements>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <!-- jhipster-needle-maven-add-profile -->
     </profiles>
 </project>
