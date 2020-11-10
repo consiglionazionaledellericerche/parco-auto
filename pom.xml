@@ -1199,6 +1199,20 @@
                 <scm.plugin.file.list>docs/conf.py</scm.plugin.file.list>
             </properties>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-scm-plugin</artifactId>
+                            <inherited>false</inherited>
+                            <configuration>
+                                <includes>docs/conf.py</includes>
+                                <message>Change version [ci skip]</message>
+                                <pushChanges>true</pushChanges>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>com.google.code.maven-replacer-plugin</groupId>

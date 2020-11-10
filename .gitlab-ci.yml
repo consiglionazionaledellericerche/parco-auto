@@ -164,6 +164,8 @@ perform-maven-release-maven-central:
     - gpg --batch --import <(echo "$GPG_PRIVATE_KEY")
     - mvn release:clean release:prepare -DreleaseVersion=$MAVEN_RELEASE_VERSION -Darguments="-Dgpg.passphrase=$GPG_PASSPHRASE -DskipTests" -Dresume=false -B $MAVEN_CLI_CENTRAL_OPTS
     - mvn release:perform -Darguments="-Dgpg.passphrase=$GPG_PASSPHRASE -DskipTests" -Dresume=false -B $MAVEN_CLI_CENTRAL_OPTS
+    - mvn -Pdocs scm:checkin
+
   only:
     variables:
       - $CI_COMMIT_MESSAGE !~ /prepare release/ && $CI_COMMIT_MESSAGE !~ /prepare for next development iteration/
