@@ -24,7 +24,7 @@ cache:
 maven-deploy:
   stage: deploy
   image: maven:3-jdk-8
-  script: "mvn clean deploy $MAVEN_CLI_OPTS -Pprod"
+  script: "mvn clean deploy -DskipTests $MAVEN_CLI_OPTS -Pprod"
   artifacts:
     paths:
       - target/*.war
