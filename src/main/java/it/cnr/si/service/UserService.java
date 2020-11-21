@@ -22,6 +22,7 @@ import it.cnr.si.domain.Authority;
 import it.cnr.si.domain.User;
 import it.cnr.si.repository.AuthorityRepository;
 import it.cnr.si.repository.UserRepository;
+import it.cnr.si.security.ACEAuthentication;
 import it.cnr.si.security.AuthoritiesConstants;
 import it.cnr.si.security.SecurityUtils;
 import it.cnr.si.service.dto.UserDTO;
@@ -284,6 +285,18 @@ public class UserService {
         User u = new User();
         u.setLangKey("it");
         u.setLogin(SecurityUtils.getCurrentUserLogin().get());
+        Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+            .filter(ACEAuthentication.class::isInstance)
+            .map(ACEAuthentication.class::cast)
+            .filter(aceAuthentication -> Optional.ofNullable(aceAuthentication.getUtente()).isPresent())
+            .ifPresent(aceAuthentication -> {
+                u.setFirstName(aceAuthentication.getUtente().getPersona().getNome());
+                u.setLastName(aceAuthentication.getUtente().getPersona().getCognome());
+                u.setEmail(aceAuthentication.getUtente().getEmail());
+                u.setId(aceAuthentication.getUtente().getId().longValue());
+                u.setLogin(aceAuthentication.getUtente().getUsername());
+            });
+
         u.setAuthorities(SecurityContextHolder.getContext().getAuthentication()
             .getAuthorities()
             .stream()

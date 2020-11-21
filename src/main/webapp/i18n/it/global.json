@@ -5,6 +5,8 @@
         "menu": {
             "home": "Home",
             "help": "Help",
+            "guide": "Manuale in linea",
+            "helpdesk": "Apri segnalazione",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entità",

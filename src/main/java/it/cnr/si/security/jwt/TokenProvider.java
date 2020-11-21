@@ -17,14 +17,20 @@
 
 package it.cnr.si.security.jwt;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.cnr.si.security.ACEAuthentication;
 import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimplePersonaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,6 +54,7 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
 
     private static final String SEDE = "sede";
+    private static final String UTENTE = "utente";
 
     private Key key;
 
@@ -104,6 +111,13 @@ public class TokenProvider {
                     .map(ACEAuthentication::getSede)
                     .orElse(null)
             )
+            .claim(UTENTE,
+                Optional.ofNullable(authentication)
+                    .filter(ACEAuthentication.class::isInstance)
+                    .map(ACEAuthentication.class::cast)
+                    .map(ACEAuthentication::getUtente)
+                    .orElse(null)
+            )
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
@@ -121,15 +135,14 @@ public class TokenProvider {
                 .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
-        final Map<String, String> mapSede = Optional.ofNullable(claims.get(SEDE))
-            .filter(Map.class::isInstance)
-            .map(Map.class::cast)
-            .orElse(Collections.emptyMap());
-        EntitaOrganizzativaWebDto entitaOrganizzativaWebDto = new EntitaOrganizzativaWebDto();
-        entitaOrganizzativaWebDto.setCdsuo(mapSede.get("cdsuo"));
-        entitaOrganizzativaWebDto.setIdnsip(mapSede.get("idnsip"));
-
-        return new ACEAuthentication(principal, token, authorities,entitaOrganizzativaWebDto);
+        final ObjectMapper mapper = new ObjectMapper();
+        return new ACEAuthentication(
+            principal,
+            mapper.convertValue(claims.get(UTENTE), SimpleUtenteWebDto.class),
+            token,
+            authorities,
+            mapper.convertValue(claims.get(SEDE), SimpleEntitaOrganizzativaWebDto.class)
+        );
     }
 
     public boolean validateToken(String authToken) {

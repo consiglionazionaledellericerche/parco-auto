@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright (C) 2020 Consiglio Nazionale delle Ricerche
+  ~
+  ~                 This program is free software: you can redistribute it and/or modify
+  ~                 it under the terms of the GNU Affero General Public License as
+  ~                 published by the Free Software Foundation, either version 3 of the
+  ~                 License, or (at your option) any later version.
+  ~
+  ~                 This program is distributed in the hope that it will be useful,
+  ~                 but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~                 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~                 GNU Affero General Public License for more details.
+  ~
+  ~                 You should have received a copy of the GNU Affero General Public License
+  ~                 along with this program. If not, see https://www.gnu.org/licenses/
+  -->
+
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2>Apri una nuova segnalazione</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!problem.idSegnalazione">
+                    <label for="idSegnalazione" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="idSegnalazione" name="idSegnalazione"
+                        [(ngModel)]="problem.idSegnalazione" readonly />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label class="form-control-label" for="field_firstName">Nome</label>
+                        <input type="text" class="form-control" name="firstName" id="field_firstName"
+                            [(ngModel)]="problem.firstName" readonly/>
+                    </div>
+                    <div class="form-group col">
+                        <label class="form-control-label" for="field_familyName">Cognome</label>
+                        <input type="text" class="form-control" name="familyName" id="field_familyName"
+                            [(ngModel)]="problem.familyName" readonly/>
+                    </div>                        
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_email">EMail</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                        [(ngModel)]="problem.email" readonly/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_oggetto">Oggetto</label>
+                    <input type="text" class="form-control" name="oggetto" id="field_oggetto"
+                        [(ngModel)]="problem.titolo" required/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_descrizione">Messaggio</label>
+                    <textarea type="text" class="form-control" rows=4 name="descrizione" id="field_descrizione"
+                        [(ngModel)]="problem.descrizione" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_allegato">Allegato</label>
+                    <div>
+                        <div *ngIf="problem.allegato" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(problem.allegatoContentType, problem.allegato)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{problem.allegatoContentType}}, {{byteSize(problem.allegato)}}</span>
+                            <button type="button" (click)="problem.allegato=null;problem.allegatoContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_allegato" (change)="setFileData($event, problem, 'allegato', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="allegato" id="field_allegato"
+                           [(ngModel)]="problem.allegato"/>
+                    <input type="hidden" class="form-control" name="allegatoContentType" id="field_allegatoContentType"
+                           [(ngModel)]="problem.allegatoContentType" />
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -21,8 +21,11 @@ import feign.FeignException;
 import it.cnr.si.service.AceService;
 import it.cnr.si.service.AuthService;
 import it.cnr.si.service.dto.anagrafica.enums.TipoRuolo;
-import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
-import it.cnr.si.service.dto.anagrafica.letture.RuoloWebDto;
+import it.cnr.si.service.dto.anagrafica.scritture.BossDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimplePersonaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleRuoloWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,29 +74,50 @@ public class JWTAuthenticationManager implements AuthenticationManager {
             throw new BadCredentialsException("login.messages.error.authentication");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        List<RuoloWebDto> ruoloWebDtos = aceService.ruoliAttivi(principal);
+        List<BossDto> bossDtos = aceService.ruoliUtenteAttivi(principal);
         authorities.addAll(
-            ruoloWebDtos.stream()
-                .filter(ruolo -> ruolo.getContesto().getSigla().equals(contestoACE))
-                .map(a -> new SimpleGrantedAuthority(Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER)))
-                .collect(Collectors.toList()));
-        authorities.addAll(
-            ruoloWebDtos.stream()
-                .filter(ruolo -> ruolo.getSigla().equals(DIRETTORE))
-                .map(a -> new SimpleGrantedAuthority(AuthoritiesConstants.SUPERUSER))
+            bossDtos.stream()
+                .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
+                .filter(bossDto -> {
+                    return !(bossDto.getEntitaOrganizzativa() != null && bossDto.getRuolo().getTipoRuolo().equals(TipoRuolo.ROLE_ADMIN));
+                })
+                .map(a -> new SimpleGrantedAuthority(
+                    Optional.ofNullable(a.getRuolo().getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER))
+                )
+                .distinct()
                 .collect(Collectors.toList()));
 
+        Optional<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativaAssegnata = bossDtos.stream()
+            .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
+            .map(bossDto -> bossDto.getEntitaOrganizzativa())
+            .findAny();
+        if (bossDtos.isEmpty()) {
+            authorities.addAll(
+                aceService.ruoliAttivi(principal).stream()
+                    .filter(ruoloWebDto -> ruoloWebDto.getContesto().getSigla().equals(contestoACE))
+                    .map(a -> new SimpleGrantedAuthority(
+                        Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER))
+                    )
+                    .distinct()
+                    .collect(Collectors.toList()));
+        }
         if (authorities.isEmpty())
             throw new InsufficientAuthenticationException("login.messages.error.insufficient-authentication");
-        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        if (!authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.USER))) {
+            authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        }
         User utente = new User(principal, credentials, authorities);
         try {
-            final PersonaWebDto personaByUsername = aceService.getPersonaByUsername(principal);
-            return new ACEAuthentication(utente, authentication, authorities,
-                Optional.ofNullable(personaByUsername)
-                    .flatMap(personaWebDto -> Optional.ofNullable(personaWebDto.getSede()))
-                    .orElse(null)
-            );
+            SimpleUtenteWebDto utenteWebDto = aceService.getUtente(principal);
+            if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
+                return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
+                    entitaOrganizzativaAssegnata.orElseGet(
+                        () -> Optional.ofNullable(utenteWebDto.getPersona())
+                                .flatMap(personaWebDto -> Optional.ofNullable(personaWebDto.getSede()))
+                                .orElse(null)
+                    )
+                );
+            }
         } catch (FeignException e) {
             log.warn("Person not found for principal {}", principal);
         }

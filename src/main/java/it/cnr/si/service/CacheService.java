@@ -24,6 +24,7 @@ import it.cnr.si.repository.VeicoloNoleggioRepository;
 import it.cnr.si.repository.VeicoloProprietaRepository;
 import it.cnr.si.service.dto.anagrafica.base.NodeDto;
 import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
 import it.cnr.si.web.rest.AssicurazioneVeicoloResource;
 import it.cnr.si.web.rest.BolloResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +77,8 @@ public class CacheService {
         return aceService.getGerarchiaUffici();
     }
     @Cacheable(ACE_SEDE_LAVORO)
-    public List<EntitaOrganizzativaWebDto> getSediDiLavoro() {
-        return aceService.entitaOrganizzativaFind(null, null, null, LocalDate.now(), null).getItems();
+    public List<SimpleEntitaOrganizzativaWebDto> getSediDiLavoro() {
+        return aceService.entitaOrganizzativaFind(null, null, LocalDate.now(), null);
     }
     @Scheduled(cron = "0 0 1 * * ?")
     public void evictAllcachesAtIntervals() {

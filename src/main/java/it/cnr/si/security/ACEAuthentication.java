@@ -17,7 +17,8 @@
 
 package it.cnr.si.security;
 
-import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
+import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,19 +27,25 @@ import java.util.Collection;
 
 public class ACEAuthentication extends UsernamePasswordAuthenticationToken implements Authentication {
 
-    public ACEAuthentication(Object principal, Object credentials, EntitaOrganizzativaWebDto sede) {
+    private final SimpleEntitaOrganizzativaWebDto sede;
+    private SimpleUtenteWebDto utente;
+
+    public ACEAuthentication(Object principal, Object credentials, SimpleEntitaOrganizzativaWebDto sede) {
         super(principal, credentials);
         this.sede = sede;
     }
-
-    public ACEAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities, EntitaOrganizzativaWebDto sede) {
+    public ACEAuthentication(Object principal, SimpleUtenteWebDto simpleUtenteWebDto, Object credentials, Collection<? extends GrantedAuthority> authorities,
+                             SimpleEntitaOrganizzativaWebDto sede) {
         super(principal, credentials, authorities);
         this.sede = sede;
+        this.utente = simpleUtenteWebDto;
     }
 
-    private EntitaOrganizzativaWebDto sede;
-
-    public EntitaOrganizzativaWebDto getSede() {
+    public SimpleEntitaOrganizzativaWebDto getSede() {
         return sede;
+    }
+
+    public SimpleUtenteWebDto getUtente() {
+        return utente;
     }
 }

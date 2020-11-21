@@ -3,9 +3,10 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import locale from '@angular/common/locales/it';
+import { ParcoautoHelpDeskModule } from './helpdesk/helpdesk.module';
 
 @NgModule({
-    imports: [HttpClientModule],
+    imports: [HttpClientModule, ParcoautoHelpDeskModule],
     exports: [],
     declarations: [],
     providers: [
