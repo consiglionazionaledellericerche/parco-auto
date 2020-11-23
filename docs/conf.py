@@ -13,7 +13,7 @@
 #      You should have received a copy of the GNU Affero General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import docs_italia_theme
+import docs_cnr_theme
 
 # Register the theme as an extension to generate a sitemap.xml
 # extensions.append('sphinx_material')
@@ -37,8 +37,10 @@ latex_elements = {
 }
 epub_basename = u'Manuale-Parco-Auto'
 
-html_theme = "docs_italia_theme"
-html_theme_path = [docs_italia_theme.get_html_theme_path()]
+html_theme = "docs_cnr_theme"
+html_theme_path = [docs_cnr_theme.get_html_theme_path()]
+# These folders are copied to the documentation's HTML output
+html_static_path = ['_static']
 
 copyright = "2020 Consiglio Nazionale delle Ricerche"
 html_title = "Parco Auto"
@@ -61,18 +63,11 @@ templates_path = ['_templates']
 # These paths are either relative to html_static_path
 # or fully qualified paths (eg. https://...)
 extensions = [
-    'docs_italia_theme',
-    'sphinxcontrib.images',
-    "sphinx.ext.autodoc",
-    "numpydoc",
-    "sphinx.ext.doctest",
-    "sphinx.ext.extlinks",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.todo",
-    "sphinx.ext.mathjax",
-    "sphinx.ext.viewcode",
-    "nbsphinx",
-    "sphinx_markdown_tables",
-    'sphinx.ext.githubpages'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.ifconfig',
+    'docs_cnr_theme'
 ]
-
