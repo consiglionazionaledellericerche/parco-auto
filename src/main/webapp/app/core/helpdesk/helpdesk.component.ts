@@ -14,6 +14,8 @@ import { JhiDataUtils } from 'ng-jhipster';
 })
 export class HelpDeskComponent implements OnInit {
     private _problem: IProblem;
+    allegatoFileName: string;
+    allegatoContentType: string;
     isSaving: boolean;
 
     constructor(
@@ -44,9 +46,9 @@ export class HelpDeskComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.problem.idSegnalazione !== undefined) {
-            this.subscribeToSaveResponse(this.helpdeskService.update(this.problem));
+            this.subscribeToSaveResponse(this.helpdeskService.update(this.problem, this.allegatoContentType, this.allegatoFileName));
         } else {
-            this.subscribeToSaveResponse(this.helpdeskService.create(this.problem));
+            this.subscribeToSaveResponse(this.helpdeskService.create(this.problem, this.allegatoContentType, this.allegatoFileName));
         }
     }
 
@@ -80,6 +82,8 @@ export class HelpDeskComponent implements OnInit {
     }
 
     setFileData(event, entity, field, isImage) {
+        this.allegatoFileName = event.target.files[0].name;
+        this.allegatoContentType = event.target.files[0].type;
         this.dataUtils.setFileData(event, entity, field, isImage);
     }
 }

@@ -12,7 +12,6 @@ export interface IProblem {
     nota?: string;
     stato?: string;
     allegato?: any;
-    allegatoContentType?: string;
 }
 
 export class Problem implements IProblem {
@@ -29,7 +28,6 @@ export class Problem implements IProblem {
         public confirmRequested?: string,
         public nota?: string,
         public stato?: string,
-        public allegato?: any,
-        public allegatoContentType?: any
+        public allegato?: any
     ) {}
 }

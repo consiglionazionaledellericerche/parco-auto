@@ -13,11 +13,23 @@ export class HelpDeskService {
 
     constructor(private http: HttpClient) {}
 
-    create(problem: IProblem): Observable<EntityResponseType> {
-        return this.http.post<IProblem>(this.resourceUrl, problem, { observe: 'response' });
+    create(problem: IProblem, allegatoContentType: string, allegatoFileName: string): Observable<EntityResponseType> {
+        return this.http.post<IProblem>(this.resourceUrl, problem, {
+            observe: 'response',
+            params: {
+                allegatoContentType: allegatoContentType,
+                allegatoFileName: allegatoFileName
+            }
+        });
     }
 
-    update(problem: IProblem): Observable<EntityResponseType> {
-        return this.http.put<IProblem>(this.resourceUrl, problem, { observe: 'response' });
+    update(problem: IProblem, allegatoContentType: string, allegatoFileName: string): Observable<EntityResponseType> {
+        return this.http.put<IProblem>(this.resourceUrl, problem, {
+            observe: 'response',
+            params: {
+                allegatoContentType: allegatoContentType,
+                allegatoFileName: allegatoFileName
+            }
+        });
     }
 }
