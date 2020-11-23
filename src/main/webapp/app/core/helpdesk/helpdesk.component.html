@@ -59,7 +59,7 @@
                         <div *ngIf="problem.allegato" class="form-text text-danger clearfix">
                             <a class="pull-left" (click)="openFile(allegatoContentType, problem.allegato)" jhiTranslate="entity.action.open">open</a><br>
                             <span class="pull-left">{{allegatoContentType}}, {{byteSize(problem.allegato)}}</span>
-                            <button type="button" (click)="problem.allegato=null;problem.allegatoContentType=null;"
+                            <button type="button" (click)="problem.allegato=null;allegatoContentType=null;"
                                     class="btn btn-secondary btn-xs pull-right">
                                 <fa-icon [icon]="'times'"></fa-icon>
                             </button>
