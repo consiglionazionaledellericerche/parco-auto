@@ -89,6 +89,7 @@ public class JWTAuthenticationManager implements AuthenticationManager {
 
         Optional<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativaAssegnata = bossDtos.stream()
             .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
+            .filter(bossDto -> Optional.ofNullable(bossDto.getEntitaOrganizzativa()).isPresent())
             .map(bossDto -> bossDto.getEntitaOrganizzativa())
             .findAny();
         if (bossDtos.isEmpty()) {
@@ -109,10 +110,11 @@ public class JWTAuthenticationManager implements AuthenticationManager {
         User utente = new User(principal, credentials, authorities);
         try {
             SimpleUtenteWebDto utenteWebDto = aceService.getUtente(principal);
+            SimplePersonaWebDto personaByUsername = aceService.getPersonaByUsername(principal);
             if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
                 return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
-                    entitaOrganizzativaAssegnata.orElseGet(
-                        () -> Optional.ofNullable(utenteWebDto.getPersona())
+                    entitaOrganizzativaAssegnata.orElse(
+                        Optional.ofNullable(personaByUsername)
                                 .flatMap(personaWebDto -> Optional.ofNullable(personaWebDto.getSede()))
                                 .orElse(null)
                     )

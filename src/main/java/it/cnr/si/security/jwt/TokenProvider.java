@@ -135,13 +135,21 @@ public class TokenProvider {
                 .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
+        final Map<String, String> mapSede = Optional.ofNullable(claims.get(SEDE))
+            .filter(Map.class::isInstance)
+            .map(Map.class::cast)
+            .orElse(Collections.emptyMap());
+        SimpleEntitaOrganizzativaWebDto entitaOrganizzativaWebDto = new SimpleEntitaOrganizzativaWebDto();
+        entitaOrganizzativaWebDto.setCdsuo(mapSede.get("cdsuo"));
+        entitaOrganizzativaWebDto.setIdnsip(mapSede.get("idnsip"));
+
         final ObjectMapper mapper = new ObjectMapper();
         return new ACEAuthentication(
             principal,
             mapper.convertValue(claims.get(UTENTE), SimpleUtenteWebDto.class),
             token,
             authorities,
-            mapper.convertValue(claims.get(SEDE), SimpleEntitaOrganizzativaWebDto.class)
+            entitaOrganizzativaWebDto
         );
     }
 
