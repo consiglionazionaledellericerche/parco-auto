@@ -115,7 +115,12 @@ public class TokenProvider {
                 Optional.ofNullable(authentication)
                     .filter(ACEAuthentication.class::isInstance)
                     .map(ACEAuthentication.class::cast)
-                    .map(ACEAuthentication::getUtente)
+                    .map(aceAuthentication -> {
+                        SimpleUtenteWebDto utente = aceAuthentication.getUtente();
+                        utente.getPersona().setDataCessazione(null);
+                        utente.getPersona().setDataPrevistaCessazione(null);
+                        return utente;
+                    })
                     .orElse(null)
             )
             .signWith(key, SignatureAlgorithm.HS512)
