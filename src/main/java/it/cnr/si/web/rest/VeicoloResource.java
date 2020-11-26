@@ -289,7 +289,7 @@ public class VeicoloResource {
         String sede = SecurityUtils.getCdS();
         List<Veicolo> veicoliAll;
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
-            veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede, false);
+            veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
         } else {
             veicoliAll = veicoloRepository.findAll();
         }
