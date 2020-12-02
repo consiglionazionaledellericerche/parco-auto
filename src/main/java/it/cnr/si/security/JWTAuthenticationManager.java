@@ -63,8 +63,11 @@ public class JWTAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
-        String principal = (String) authentication.getPrincipal();
+        String principal = Optional.ofNullable(authentication.getPrincipal())
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .map(String::toLowerCase)
+            .orElseThrow(() -> new BadCredentialsException("login.messages.error.authentication"));
         String credentials = (String) authentication.getCredentials();
         // login ACE
         try {
