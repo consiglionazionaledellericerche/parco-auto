@@ -33,10 +33,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface VeicoloRepository extends JpaRepository<Veicolo, Long> {
-    @Query("SELECT v FROM Veicolo v where v.istituto like :istituto AND v.deleted =:deleted")
-    Page<Veicolo> findByIstitutoStartsWithAndDeleted(@Param("istituto") String istituto, @Param("deleted") Boolean deleted, Pageable pageable);
-    @Query("SELECT v FROM Veicolo v where v.istituto like :istituto AND v.deleted =:deleted")
-    List<Veicolo> findByIstitutoStartsWithAndDeleted(@Param("istituto") String istituto, @Param("deleted") Boolean deleted);
+    @Query("SELECT v FROM Veicolo v where v.istituto in :istituto AND v.deleted =:deleted")
+    Page<Veicolo> findByIstitutoStartsWithAndDeleted(@Param("istituto") List<String> istituto, @Param("deleted") Boolean deleted, Pageable pageable);
+    @Query("SELECT v FROM Veicolo v where v.istituto in :istituto AND v.deleted =:deleted")
+    List<Veicolo> findByIstitutoStartsWithAndDeleted(@Param("istituto") List<String> istituto, @Param("deleted") Boolean deleted);
 
     List<Veicolo> findByTargaAndDeleted(String targa, Boolean deleted);
 

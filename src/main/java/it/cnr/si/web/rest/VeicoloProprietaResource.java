@@ -46,6 +46,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ch.qos.logback.core.encoder.ByteArrayUtil.hexStringToByteArray;
 
@@ -151,10 +152,10 @@ public class VeicoloProprietaResource {
         if (veicoloProprieta.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            veicoloProprieta.getVeicolo().getIstituto().startsWith(sede))) {
+            cdSUO.contains(veicoloProprieta.getVeicolo().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         if (veicoloProprieta.getEtichetta().equals("")) {
@@ -192,13 +193,13 @@ public class VeicoloProprietaResource {
     @Timed
     public ResponseEntity<List<VeicoloProprieta>> getAllVeicoloProprietas(Pageable pageable) {
         log.debug("REST request to get a page of VeicoloProprietas");
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         Page<VeicoloProprieta> page;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = veicoloProprietaRepository.findAllActive(false, pageable);
         else
-            page = veicoloProprietaRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
+            page = veicoloProprietaRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false, pageable);
 
         TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/veicolo-proprietas");
@@ -235,10 +236,10 @@ public class VeicoloProprietaResource {
         if (!veicoloProprieta.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            veicoloProprieta.get().getVeicolo().getIstituto().startsWith(sede))) {
+            cdSUO.contains(veicoloProprieta.get().getVeicolo().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -259,14 +260,14 @@ public class VeicoloProprietaResource {
 
         List<VeicoloNoleggio> allVeicoliNoleggio;
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
             veicoli = veicoloRepository.findByDeletedFalse();
         } else {
-            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
         }
         log.debug("Da tutti i veicoli: {}",veicoli);
         if(TARGA == null){

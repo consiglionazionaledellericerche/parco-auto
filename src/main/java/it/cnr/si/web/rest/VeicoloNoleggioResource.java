@@ -52,6 +52,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing VeicoloNoleggio.
@@ -101,7 +102,7 @@ public class VeicoloNoleggioResource {
         Optional<List<Contract>> repContratti;
         codiceTerzo = optCodiceTerzo.orElse("");
         if(!codiceTerzo.equals("")){
-            siglaUo = veicoloNoleggio.getVeicolo().getIstituto().substring(0,3)+"."+veicoloNoleggio.getVeicolo().getIstituto().substring(3);
+            siglaUo = veicoloNoleggio.getVeicolo().getIstituto()+"."+veicoloNoleggio.getVeicolo().getIstituto().substring(3);
             repContratti = siglaService.getContract(codiceTerzo,siglaUo);
             //repContratti = siglaService.getContract("63470","123.005");
             log.debug("siglaUo = {}",siglaUo);
@@ -147,10 +148,10 @@ public class VeicoloNoleggioResource {
         if (veicoloNoleggio.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            veicoloNoleggio.getVeicolo().getIstituto().startsWith(sede))) {
+            cdSUO.contains(veicoloNoleggio.getVeicolo().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -164,7 +165,7 @@ public class VeicoloNoleggioResource {
         Optional<List<Contract>> repContratti;
         codiceTerzo = optCodiceTerzo.orElse("");
         if(!codiceTerzo.equals("")){
-            siglaUo = veicoloNoleggio.getVeicolo().getIstituto().substring(0,3)+"."+veicoloNoleggio.getVeicolo().getIstituto().substring(3);
+            siglaUo = veicoloNoleggio.getVeicolo().getIstituto()+"."+veicoloNoleggio.getVeicolo().getIstituto().substring(3);
             repContratti = siglaService.getContract(codiceTerzo,siglaUo);
             //repContratti = siglaService.getContract("63470","123.005");
             log.debug("siglaUo = {}",siglaUo);
@@ -204,13 +205,13 @@ public class VeicoloNoleggioResource {
     @Timed
     public ResponseEntity<List<VeicoloNoleggio>> getAllVeicoloNoleggios(Pageable pageable) {
         log.debug("REST request to get a page of VeicoloNoleggios");
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         Page<VeicoloNoleggio> page;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = veicoloNoleggioRepository.findAllActive(false, pageable);
         else
-            page = veicoloNoleggioRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
+            page = veicoloNoleggioRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false, pageable);
 
         TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/veicolo-noleggios");
@@ -261,14 +262,14 @@ public class VeicoloNoleggioResource {
 
         List<VeicoloNoleggio> allVeicoliNoleggio;
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
             veicoli = veicoloRepository.findByDeletedFalse();
         } else {
-            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
         }
         if(TARGA == null){
 

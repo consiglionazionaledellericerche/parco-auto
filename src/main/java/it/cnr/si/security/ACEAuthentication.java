@@ -24,24 +24,25 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ACEAuthentication extends UsernamePasswordAuthenticationToken implements Authentication {
 
-    private final SimpleEntitaOrganizzativaWebDto sede;
+    private final List<SimpleEntitaOrganizzativaWebDto> sede;
     private SimpleUtenteWebDto utente;
 
-    public ACEAuthentication(Object principal, Object credentials, SimpleEntitaOrganizzativaWebDto sede) {
+    public ACEAuthentication(Object principal, Object credentials, List<SimpleEntitaOrganizzativaWebDto> sede) {
         super(principal, credentials);
         this.sede = sede;
     }
     public ACEAuthentication(Object principal, SimpleUtenteWebDto simpleUtenteWebDto, Object credentials, Collection<? extends GrantedAuthority> authorities,
-                             SimpleEntitaOrganizzativaWebDto sede) {
+                             List<SimpleEntitaOrganizzativaWebDto> sede) {
         super(principal, credentials, authorities);
         this.sede = sede;
         this.utente = simpleUtenteWebDto;
     }
 
-    public SimpleEntitaOrganizzativaWebDto getSede() {
+    public List<SimpleEntitaOrganizzativaWebDto> getSede() {
         return sede;
     }
 

@@ -45,6 +45,7 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Validazione.
@@ -122,11 +123,11 @@ public class ValidazioneResource {
     public ResponseEntity<List<Validazione>> getAllValidaziones(Pageable pageable) {
         log.debug("REST request to get a page of Validaziones");
         Page<Validazione> page;
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = validazioneRepository.findAll(pageable);
         else
-            page = validazioneRepository.findByIstituto(sede.concat("%"), pageable);
+            page = validazioneRepository.findByIstituto(cdSUO, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/validaziones");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

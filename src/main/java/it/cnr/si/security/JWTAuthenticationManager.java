@@ -20,6 +20,7 @@ package it.cnr.si.security;
 import feign.FeignException;
 import it.cnr.si.service.AceService;
 import it.cnr.si.service.AuthService;
+import it.cnr.si.service.dto.anagrafica.enums.TipoAppartenenza;
 import it.cnr.si.service.dto.anagrafica.enums.TipoRuolo;
 import it.cnr.si.service.dto.anagrafica.scritture.BossDto;
 import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
@@ -41,10 +42,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class JWTAuthenticationManager implements AuthenticationManager {
@@ -90,11 +91,11 @@ public class JWTAuthenticationManager implements AuthenticationManager {
                 .distinct()
                 .collect(Collectors.toList()));
 
-        Optional<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativaAssegnata = bossDtos.stream()
+        Stream<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativaAssegnata = bossDtos.stream()
             .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
             .filter(bossDto -> Optional.ofNullable(bossDto.getEntitaOrganizzativa()).isPresent())
-            .map(bossDto -> bossDto.getEntitaOrganizzativa())
-            .findAny();
+            .map(bossDto -> bossDto.getEntitaOrganizzativa());
+
         if (bossDtos.isEmpty()) {
             authorities.addAll(
                 aceService.ruoliAttivi(principal).stream()
@@ -113,14 +114,12 @@ public class JWTAuthenticationManager implements AuthenticationManager {
         User utente = new User(principal, credentials, authorities);
         try {
             SimpleUtenteWebDto utenteWebDto = aceService.getUtente(principal);
-            SimplePersonaWebDto personaByUsername = aceService.getPersonaByUsername(principal);
+            List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
+                aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
+
             if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
                 return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
-                    entitaOrganizzativaAssegnata.orElse(
-                        Optional.ofNullable(personaByUsername)
-                                .flatMap(personaWebDto -> Optional.ofNullable(personaWebDto.getSede()))
-                                .orElse(null)
-                    )
+                    Stream.concat(entitaOrganizzativaAssegnata, entitaOrganizzativeStruttura.stream()).collect(Collectors.toList())
                 );
             }
         } catch (FeignException e) {

@@ -24,7 +24,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for Spring Security.
@@ -53,7 +56,7 @@ public final class SecurityUtils {
             });
     }
 
-    private static Optional<SimpleEntitaOrganizzativaWebDto> getSede() {
+    private static Optional<List<SimpleEntitaOrganizzativaWebDto>> getSede() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
                     .filter(ACEAuthentication.class::isInstance)
@@ -61,12 +64,11 @@ public final class SecurityUtils {
                     .map(ACEAuthentication::getSede);
     }
 
-    public static String getCdS() {
+    public static List<String> getCdSUO() {
         return getSede()
-            .flatMap(entitaOrganizzativa ->  Optional.ofNullable(entitaOrganizzativa.getCdsuo()))
-            .filter(s -> s.length() > 3)
-            .map(s -> s.substring(0, 3))
-            .orElse("");
+            .map(simpleEntitaOrganizzativaWebDtos -> simpleEntitaOrganizzativaWebDtos.stream()
+                    .map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct().collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
     }
 
     /**

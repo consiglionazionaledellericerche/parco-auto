@@ -147,9 +147,9 @@ public class VeicoloResource {
         if (veicolo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        String sede = SecurityUtils.getCdS();
-        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
-            !veicolo.getIstituto().startsWith(sede)) {
+        List<String> cdSUO = SecurityUtils.getCdSUO();
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+            cdSUO.contains(veicolo.getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -180,13 +180,13 @@ public class VeicoloResource {
     public ResponseEntity<List<Veicolo>> getAllVeicolos(Pageable pageable) {
         log.debug("REST request to get a page of Veicolos");
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         //allVeicoli();throws JSONException
         Page<Veicolo> veicoli;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             veicoli = veicoloRepository.findByDeletedFalse(pageable);
         } else {
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(veicoli, "/api/veicolos");
         return new ResponseEntity<>(veicoli.getContent(), headers, HttpStatus.OK);
@@ -207,9 +207,9 @@ public class VeicoloResource {
         if (!veicolo.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            veicolo.get().getIstituto().startsWith(sede))) {
+            cdSUO.contains(veicolo.get().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseUtil.wrapOrNotFound(veicolo);
@@ -229,8 +229,9 @@ public class VeicoloResource {
         if (!veicolo.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        String sede = SecurityUtils.getCdS();
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || veicolo.get().getIstituto().startsWith(sede))) {
+        List<String> cdSUO = SecurityUtils.getCdSUO();
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+            cdSUO.contains(veicolo.get().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Veicolo vei = veicolo.get();
@@ -263,7 +264,7 @@ public class VeicoloResource {
     @Timed
     public ResponseEntity<List<SimpleEntitaOrganizzativaWebDto>> findIstituto() {
 
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         return ResponseEntity.ok(cacheService.getSediDiLavoro()
             .stream()
@@ -272,7 +273,7 @@ public class VeicoloResource {
                 if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
                     return true;
                 } else {
-                    return entitaOrganizzativaWebDto.getCdsuo().startsWith(sede);
+                    return cdSUO.contains(entitaOrganizzativaWebDto.getCdsuo());
                 }
             })
             .sorted((i1, i2) -> i1.getCdsuo().compareTo(i2.getCdsuo()))
@@ -286,10 +287,12 @@ public class VeicoloResource {
     @GetMapping("/veicolos/getAllVeicoli")
     @Timed
     public ResponseEntity<Map<String, Object>> allVeicoli() throws IOException {
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         List<Veicolo> veicoliAll;
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
-            veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(
+                cdSUO,
+                false);
         } else {
             veicoliAll = veicoloRepository.findAll();
         }

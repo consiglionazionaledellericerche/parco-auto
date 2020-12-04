@@ -24,7 +24,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.ArrayType;
 import it.cnr.si.security.ACEAuthentication;
 import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
 import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
@@ -109,10 +111,14 @@ public class TokenProvider {
                     .filter(ACEAuthentication.class::isInstance)
                     .map(ACEAuthentication.class::cast)
                     .map(aceAuthentication -> {
-                        SimpleEntitaOrganizzativaWebDto entitaOrganizzativaWebDto = aceAuthentication.getSede();
-                        entitaOrganizzativaWebDto.setIndirizzoPrincipale(null);
-                        entitaOrganizzativaWebDto.setTipo(null);
-                        return entitaOrganizzativaWebDto;
+                        return aceAuthentication
+                            .getSede()
+                            .stream()
+                            .map(entitaOrganizzativaWebDto -> {
+                                entitaOrganizzativaWebDto.setIndirizzoPrincipale(null);
+                                entitaOrganizzativaWebDto.setTipo(null);
+                                return entitaOrganizzativaWebDto;
+                            }).collect(Collectors.toList());
                     })
                     .orElse(null)
             )
@@ -151,7 +157,10 @@ public class TokenProvider {
             mapper.convertValue(claims.get(UTENTE), SimpleUtenteWebDto.class),
             token,
             authorities,
-            mapper.convertValue(claims.get(SEDE), SimpleEntitaOrganizzativaWebDto.class)
+            mapper.convertValue(
+                claims.get(SEDE),
+                new TypeReference<List<SimpleEntitaOrganizzativaWebDto>>() {}
+            )
         );
     }
 

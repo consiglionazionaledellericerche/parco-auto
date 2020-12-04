@@ -24,6 +24,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * Spring Data  repository for the Validazione entity.
@@ -32,6 +34,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ValidazioneRepository extends JpaRepository<Validazione, Long> {
 
-    @Query("SELECT va FROM Validazione va where va.veicolo.istituto like :istituto")
-    public Page<Validazione> findByIstituto(@Param("istituto") String istituto, Pageable pageable);
+    @Query("SELECT va FROM Validazione va where va.veicolo.istituto in :istituto")
+    public Page<Validazione> findByIstituto(@Param("istituto") List<String> istituto, Pageable pageable);
 }

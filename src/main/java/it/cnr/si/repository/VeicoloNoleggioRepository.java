@@ -37,8 +37,8 @@ import java.util.Optional;
 @Repository
 public interface VeicoloNoleggioRepository extends JpaRepository<VeicoloNoleggio, Long> {
 
-    @Query("SELECT vn FROM VeicoloNoleggio vn where vn.veicolo.istituto like :istituto AND vn.veicolo.deleted =:deleted")
-    public Page<VeicoloNoleggio> findByIstitutoStartsWithAndDeleted(@Param("istituto") String istituto, @Param("deleted") Boolean deleted, Pageable pageable);
+    @Query("SELECT vn FROM VeicoloNoleggio vn where vn.veicolo.istituto in :istituto AND vn.veicolo.deleted =:deleted")
+    public Page<VeicoloNoleggio> findByIstitutoStartsWithAndDeleted(@Param("istituto") List<String> istituto, @Param("deleted") Boolean deleted, Pageable pageable);
 
     @Query("SELECT vn FROM VeicoloNoleggio vn where vn.veicolo.deleted =:deleted ")
     public Page<VeicoloNoleggio> findAllActive(@Param("deleted") Boolean deleted, Pageable pageable);

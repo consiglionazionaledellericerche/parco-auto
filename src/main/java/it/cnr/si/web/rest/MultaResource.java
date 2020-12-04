@@ -49,6 +49,7 @@ import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Multa.
@@ -186,7 +187,7 @@ public class MultaResource {
     @GetMapping("/multas/findVeicolo")
     @Timed
     public ResponseEntity<List<Veicolo>> findVeicolo() {
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         List<Veicolo> veicoli;
         List<Veicolo> veicoliRimasti;
 
@@ -194,8 +195,8 @@ public class MultaResource {
             veicoli = veicoloRepository.findByDeletedFalse();
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
         } else {
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
-            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
         }
         if(TARGA == null){
 

@@ -46,6 +46,7 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing AssicurazioneVeicolo.
@@ -135,12 +136,12 @@ public class AssicurazioneVeicoloResource {
     @Timed
     public ResponseEntity<List<AssicurazioneVeicolo>> getAllAssicurazioneVeicolos(Pageable pageable) {
         log.debug("REST request to get a page of AssicurazioneVeicolos");
-        String sede = SecurityUtils.getCdS();
+        List<String> cdsuo = SecurityUtils.getCdSUO();
         Page<AssicurazioneVeicolo> page;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             page = assicurazioneVeicoloRepository.findByDeleted(false, pageable);
         } else {
-            page = assicurazioneVeicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false, pageable);
+            page = assicurazioneVeicoloRepository.findByIstitutoStartsWithAndDeleted(cdsuo, false, pageable);
         }
         TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/assicurazione-veicolos");
@@ -182,7 +183,7 @@ public class AssicurazioneVeicoloResource {
     @GetMapping("/assicurazione-veicolos/findVeicolo")
     @Timed
     public ResponseEntity<List<Veicolo>> findVeicolo() {
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
         List<Veicolo> veicoli;
         List<Veicolo> veicoliRimasti;
 
@@ -190,8 +191,8 @@ public class AssicurazioneVeicoloResource {
             veicoli = veicoloRepository.findByDeletedFalse();
             veicoliRimasti = veicoloRepository.findByDeletedFalse();
         } else {
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
-            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
+            veicoliRimasti = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
         }
         if(TARGA == null){
 

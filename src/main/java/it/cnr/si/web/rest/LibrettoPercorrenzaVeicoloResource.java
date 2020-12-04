@@ -44,6 +44,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing LibrettoPercorrenzaVeicolo.
@@ -95,10 +96,10 @@ public class LibrettoPercorrenzaVeicoloResource {
         if (librettoPercorrenzaVeicolo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
-            librettoPercorrenzaVeicolo.getVeicolo().getIstituto().startsWith(sede))) {
+            cdSUO.contains(librettoPercorrenzaVeicolo.getVeicolo().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         LibrettoPercorrenzaVeicolo result = librettoPercorrenzaVeicoloRepository.save(librettoPercorrenzaVeicolo);
@@ -117,13 +118,13 @@ public class LibrettoPercorrenzaVeicoloResource {
     @Timed
     public ResponseEntity<List<LibrettoPercorrenzaVeicolo>> getAllLibrettoPercorrenzaVeicolos(Pageable pageable) {
         log.debug("REST request to get a page of LibrettoPercorrenzaVeicolos");
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         Page<LibrettoPercorrenzaVeicolo> page;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             page = librettoPercorrenzaVeicoloRepository.findByDeleted(false, pageable);
         else
-            page = librettoPercorrenzaVeicoloRepository.findByIstitutoStartsWithAndDeteled(sede.concat("%"), false, pageable);
+            page = librettoPercorrenzaVeicoloRepository.findByIstitutoStartsWithAndDeteled(cdSUO, false, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/libretto-percorrenza-veicolos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -163,14 +164,14 @@ public class LibrettoPercorrenzaVeicoloResource {
     @GetMapping("/libretto-percorrenza-veicolos/findVeicolo")
     @Timed
     public ResponseEntity<List<Veicolo>> findVeicolo() {
-        String sede = SecurityUtils.getCdS();
+        List<String> cdSUO = SecurityUtils.getCdSUO();
 
         List<Veicolo> veicoli;
 
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))
             veicoli = veicoloRepository.findByDeletedFalse();
         else
-            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(sede.concat("%"), false);
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
 
         return ResponseEntity.ok(veicoli);
     }
