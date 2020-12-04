@@ -114,10 +114,9 @@ public class JWTAuthenticationManager implements AuthenticationManager {
         User utente = new User(principal, credentials, authorities);
         try {
             SimpleUtenteWebDto utenteWebDto = aceService.getUtente(principal);
-            List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
-                aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
-
             if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
+                List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
+                    aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
                 return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
                     Stream.concat(entitaOrganizzativaAssegnata, entitaOrganizzativeStruttura.stream()).collect(Collectors.toList())
                 );
