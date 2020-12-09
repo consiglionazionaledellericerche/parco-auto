@@ -28,21 +28,21 @@ import java.util.List;
 
 public class ACEAuthentication extends UsernamePasswordAuthenticationToken implements Authentication {
 
-    private final List<SimpleEntitaOrganizzativaWebDto> sede;
+    private final List<String> sede;
     private SimpleUtenteWebDto utente;
 
-    public ACEAuthentication(Object principal, Object credentials, List<SimpleEntitaOrganizzativaWebDto> sede) {
+    public ACEAuthentication(Object principal, Object credentials, List<String> sede) {
         super(principal, credentials);
         this.sede = sede;
     }
     public ACEAuthentication(Object principal, SimpleUtenteWebDto simpleUtenteWebDto, Object credentials, Collection<? extends GrantedAuthority> authorities,
-                             List<SimpleEntitaOrganizzativaWebDto> sede) {
+                             List<String> sede) {
         super(principal, credentials, authorities);
         this.sede = sede;
         this.utente = simpleUtenteWebDto;
     }
 
-    public List<SimpleEntitaOrganizzativaWebDto> getSede() {
+    public List<String> getSede() {
         return sede;
     }
 

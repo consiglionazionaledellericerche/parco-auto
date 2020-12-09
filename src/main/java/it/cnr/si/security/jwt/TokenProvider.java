@@ -17,25 +17,16 @@
 
 package it.cnr.si.security.jwt;
 
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ArrayType;
+import io.github.jhipster.config.JHipsterProperties;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import it.cnr.si.security.ACEAuthentication;
-import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
-import it.cnr.si.service.dto.anagrafica.letture.PersonaWebDto;
-import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
-import it.cnr.si.service.dto.anagrafica.simpleweb.SimplePersonaWebDto;
 import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,28 +34,23 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
 
-    private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
-
     private static final String AUTHORITIES_KEY = "auth";
-
     private static final String SEDE = "sede";
     private static final String UTENTE = "utente";
-
-    private Key key;
-
-    private long tokenValidityInMilliseconds;
-
-    private long tokenValidityInMillisecondsForRememberMe;
-
+    private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final JHipsterProperties jHipsterProperties;
+    private Key key;
+    private long tokenValidityInMilliseconds;
+    private long tokenValidityInMillisecondsForRememberMe;
 
     public TokenProvider(JHipsterProperties jHipsterProperties) {
         this.jHipsterProperties = jHipsterProperties;
@@ -114,11 +100,7 @@ public class TokenProvider {
                         return aceAuthentication
                             .getSede()
                             .stream()
-                            .map(entitaOrganizzativaWebDto -> {
-                                entitaOrganizzativaWebDto.setIndirizzoPrincipale(null);
-                                entitaOrganizzativaWebDto.setTipo(null);
-                                return entitaOrganizzativaWebDto;
-                            }).collect(Collectors.toList());
+                            .collect(Collectors.toList());
                     })
                     .orElse(null)
             )
@@ -159,7 +141,8 @@ public class TokenProvider {
             authorities,
             mapper.convertValue(
                 claims.get(SEDE),
-                new TypeReference<List<SimpleEntitaOrganizzativaWebDto>>() {}
+                new TypeReference<List<String>>() {
+                }
             )
         );
     }

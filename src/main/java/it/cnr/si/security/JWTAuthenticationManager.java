@@ -118,7 +118,10 @@ public class JWTAuthenticationManager implements AuthenticationManager {
                 List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
                     aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
                 return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
-                    Stream.concat(entitaOrganizzativaAssegnata, entitaOrganizzativeStruttura.stream()).collect(Collectors.toList())
+                    Stream.concat(
+                        entitaOrganizzativaAssegnata.map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct(),
+                        entitaOrganizzativeStruttura.stream().map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct()
+                    ).collect(Collectors.toList())
                 );
             }
         } catch (FeignException e) {

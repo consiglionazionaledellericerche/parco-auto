@@ -56,18 +56,18 @@ public final class SecurityUtils {
             });
     }
 
-    private static Optional<List<SimpleEntitaOrganizzativaWebDto>> getSede() {
+    private static Optional<List<String>> getSede() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
-                    .filter(ACEAuthentication.class::isInstance)
-                    .map(ACEAuthentication.class::cast)
-                    .map(ACEAuthentication::getSede);
+            .filter(ACEAuthentication.class::isInstance)
+            .map(ACEAuthentication.class::cast)
+            .map(ACEAuthentication::getSede);
     }
 
     public static List<String> getCdSUO() {
         return getSede()
             .map(simpleEntitaOrganizzativaWebDtos -> simpleEntitaOrganizzativaWebDtos.stream()
-                    .map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct().collect(Collectors.toList()))
+                .distinct().collect(Collectors.toList()))
             .orElse(Collections.emptyList());
     }
 
