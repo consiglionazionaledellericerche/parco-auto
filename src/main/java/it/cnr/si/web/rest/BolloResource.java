@@ -139,7 +139,14 @@ public class BolloResource {
     @Timed
     public ResponseEntity<List<Bollo>> getAllBollos(Pageable pageable) {
         log.debug("REST request to get a page of Bollos");
-        Page<Bollo> page = bolloRepository.findAll(pageable);
+        //Page<Bollo> page = bolloRepository.findAll(pageable);
+        List<String> cdsuo = SecurityUtils.getCdSUO();
+        Page<Bollo> page;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            page = bolloRepository.findByDeleted(false, pageable);
+        } else {
+            page = bolloRepository.findByIstitutoStartsWithAndDeleted(cdsuo, false, pageable);
+        }
         TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bollos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

@@ -18,8 +18,13 @@
 package it.cnr.si.repository;
 
 import it.cnr.si.domain.Multa;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -28,5 +33,11 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface MultaRepository extends JpaRepository<Multa, Long> {
+
+    @Query("SELECT m FROM Multa m where m.veicolo.istituto in :istituto AND m.veicolo.deleted =:deleted")
+    public Page<Multa> findByIstitutoStartsWithAndDeleted(@Param("istituto") List<String> istituto, @Param("deleted") Boolean deleted, Pageable pageable);
+
+    @Query("SELECT m FROM Multa m where m.veicolo.deleted =:deleted ")
+    public Page<Multa> findByDeleted(@Param("deleted") Boolean deleted, Pageable pageable);
 
 }

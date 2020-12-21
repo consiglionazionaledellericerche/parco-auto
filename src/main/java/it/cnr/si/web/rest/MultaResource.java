@@ -146,7 +146,14 @@ public class MultaResource {
     @Timed
     public ResponseEntity<List<Multa>> getAllMultas(Pageable pageable) {
         log.debug("REST request to get a page of Multas");
-        Page<Multa> page = multaRepository.findAll(pageable);
+        //Page<Multa> page = multaRepository.findAll(pageable);
+        List<String> cdsuo = SecurityUtils.getCdSUO();
+        Page<Multa> page;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            page = multaRepository.findByDeleted(false, pageable);
+        } else {
+            page = multaRepository.findByIstitutoStartsWithAndDeleted(cdsuo, false, pageable);
+        }
         TARGA = "";
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/multas");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
