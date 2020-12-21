@@ -23,7 +23,7 @@ source_parsers = {
 }
 
 project = 'Parco Auto'
-release = '1.0.13'
+release = '1.0.17'
 author = u'Consiglio Nazionale delle Ricerche'
 
 show_authors = True
