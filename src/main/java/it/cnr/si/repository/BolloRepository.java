@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /**
@@ -37,7 +38,7 @@ import java.util.Optional;
 @Repository
 public interface BolloRepository extends JpaRepository<Bollo, Long> {
 
-    Optional<Bollo> findByVeicolo(@Param("veicolo") Veicolo veicolo);
+    Stream<Bollo> findByVeicolo(@Param("veicolo") Veicolo veicolo);
 
     @Query("SELECT b FROM Bollo b where b.veicolo.istituto in :istituto AND b.veicolo.deleted =:deleted")
     public Page<Bollo> findByIstitutoStartsWithAndDeleted(@Param("istituto") List<String> istituto, @Param("deleted") Boolean deleted, Pageable pageable);

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /**
@@ -43,6 +44,6 @@ public interface AssicurazioneVeicoloRepository extends JpaRepository<Assicurazi
     @Query("SELECT av FROM AssicurazioneVeicolo av where av.veicolo.deleted =:deleted ")
     public Page<AssicurazioneVeicolo> findByDeleted(@Param("deleted") Boolean deleted, Pageable pageable);
 
-    Optional<AssicurazioneVeicolo> findByVeicolo(@Param("veicolo") Veicolo veicolo);
+    Stream<AssicurazioneVeicolo> findByVeicolo(@Param("veicolo") Veicolo veicolo);
 
 }

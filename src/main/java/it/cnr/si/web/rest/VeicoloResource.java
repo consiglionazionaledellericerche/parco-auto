@@ -49,6 +49,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
@@ -286,6 +287,7 @@ public class VeicoloResource {
 
     @GetMapping("/veicolos/getAllVeicoli")
     @Timed
+    @Transactional
     public ResponseEntity<Map<String, Object>> allVeicoli() throws IOException {
         List<String> cdSUO = SecurityUtils.getCdSUO();
         List<Veicolo> veicoliAll;
@@ -308,8 +310,8 @@ public class VeicoloResource {
             veicoliAll.stream()
                 .map(veicolo -> {
                     final Optional<VeicoloProprieta> veicoloProprietaOptional = veicoloProprietaRepository.findByVeicolo(veicolo);
-                    final Optional<Bollo> bolloOptional = bolloRepository.findByVeicolo(veicolo);
-                    final Optional<AssicurazioneVeicolo> assicurazioneVeicoloOptional = assicurazioneVeicoloRepository.findByVeicolo(veicolo);
+                    final Stream<Bollo> bolloOptional = bolloRepository.findByVeicolo(veicolo);
+                    final Stream<AssicurazioneVeicolo> assicurazioneVeicoloOptional = assicurazioneVeicoloRepository.findByVeicolo(veicolo);
 
                     final Optional<VeicoloNoleggio> veicoloNoleggioOptional = veicoloNoleggioRepository.findByVeicolo(veicolo);
 
@@ -324,12 +326,12 @@ public class VeicoloResource {
                         ).orElse(""))
                         .setBollo(bolloOptional.map(bollo -> {
                             return formatter.format(bollo.getDataScadenza());
-                        }).orElse(""))
+                        }).collect(Collectors.joining(";")))
                         .setAssicurazione(assicurazioneVeicoloOptional.map(
                             assicurazioneVeicolo -> {
                                 return "Compagnia:" + assicurazioneVeicolo.getCompagniaAssicurazione() + " Numero Polizza: " + assicurazioneVeicolo.getNumeroPolizza() + " Scadenza:" + formatter.format(assicurazioneVeicolo.getDataScadenza());
                             }
-                        ).orElse(""))
+                        ).collect(Collectors.joining(";")))
                         .setNoleggio(veicoloNoleggioOptional.map(
                             veicoloNoleggio -> {
                                 return "Società:" + veicoloNoleggio.getSocieta() + " Data Inizio:" + formatter.format(veicoloNoleggio.getDataInizioNoleggio()) + " Data Fine: " + formatter.format(veicoloNoleggio.getDataFineNoleggio());
