@@ -50,7 +50,6 @@ import java.util.stream.Stream;
 @Component
 public class JWTAuthenticationManager implements AuthenticationManager {
 
-    public static final String DIRETTORE = "direttore";
     private final Logger log = LoggerFactory.getLogger(JWTAuthenticationManager.class);
 
     @Autowired
@@ -59,8 +58,8 @@ public class JWTAuthenticationManager implements AuthenticationManager {
     @Autowired
     private AceService aceService;
 
-    @Value("${ace.contesto}")
-    private String contestoACE;
+    @Value("#{'${ace.contesto}'.split(',')}")
+    private List<String> contestoACE;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -81,7 +80,7 @@ public class JWTAuthenticationManager implements AuthenticationManager {
         List<BossDto> bossDtos = aceService.ruoliUtenteAttivi(principal);
         authorities.addAll(
             bossDtos.stream()
-                .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
+                .filter(bossDto -> contestoACE.contains(bossDto.getRuolo().getContesto().getSigla()))
                 .filter(bossDto -> {
                     return !(bossDto.getEntitaOrganizzativa() != null && bossDto.getRuolo().getTipoRuolo().equals(TipoRuolo.ROLE_ADMIN));
                 })
@@ -92,14 +91,14 @@ public class JWTAuthenticationManager implements AuthenticationManager {
                 .collect(Collectors.toList()));
 
         Stream<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativaAssegnata = bossDtos.stream()
-            .filter(bossDto -> bossDto.getRuolo().getContesto().getSigla().equals(contestoACE))
+            .filter(bossDto -> contestoACE.contains(bossDto.getRuolo().getContesto().getSigla()))
             .filter(bossDto -> Optional.ofNullable(bossDto.getEntitaOrganizzativa()).isPresent())
             .map(bossDto -> bossDto.getEntitaOrganizzativa());
 
         if (bossDtos.isEmpty()) {
             authorities.addAll(
                 aceService.ruoliAttivi(principal).stream()
-                    .filter(ruoloWebDto -> ruoloWebDto.getContesto().getSigla().equals(contestoACE))
+                    .filter(ruoloWebDto -> contestoACE.contains(ruoloWebDto.getContesto().getSigla()))
                     .map(a -> new SimpleGrantedAuthority(
                         Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER))
                     )
