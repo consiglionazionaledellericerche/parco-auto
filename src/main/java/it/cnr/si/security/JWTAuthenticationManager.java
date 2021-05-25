@@ -97,6 +97,7 @@ public class JWTAuthenticationManager implements AuthenticationManager {
         if (bossDtos.isEmpty()) {
             authorities.addAll(
                 aceService.ruoliAttivi(principal).stream()
+                    .filter(ruoloWebDto -> ruoloWebDto.getContesto().getSigla().equals(contestoACE))
                     .map(a -> new SimpleGrantedAuthority(
                         Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER))
                     )
