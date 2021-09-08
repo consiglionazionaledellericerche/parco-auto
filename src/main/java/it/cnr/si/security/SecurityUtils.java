@@ -111,4 +111,12 @@ public final class SecurityUtils {
                 .anyMatch(grantedAuthority -> Arrays.asList(authority).contains(grantedAuthority.getAuthority())))
             .orElse(false);
     }
+
+    public static boolean isCurrentUserInRole(String authority) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(securityContext.getAuthentication())
+            .map(authentication -> authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority)))
+            .orElse(false);
+    }
 }

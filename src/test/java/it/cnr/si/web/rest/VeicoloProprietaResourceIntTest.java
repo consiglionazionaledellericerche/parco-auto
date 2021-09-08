@@ -21,7 +21,6 @@ import it.cnr.si.ParcoautoApp;
 import it.cnr.si.domain.Veicolo;
 import it.cnr.si.domain.VeicoloProprieta;
 import it.cnr.si.repository.VeicoloProprietaRepository;
-import it.cnr.si.security.DomainUserDetailsServiceIntTest;
 import it.cnr.si.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -42,8 +41,6 @@ import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -266,7 +263,7 @@ public class VeicoloProprietaResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getAllVeicoloProprietas() throws Exception {
         // Initialize the database
         veicoloProprietaRepository.saveAndFlush(veicoloProprieta);
@@ -325,7 +322,7 @@ public class VeicoloProprietaResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void updateVeicoloProprieta() throws Exception {
         // Initialize the database
         veicoloProprietaRepository.saveAndFlush(veicoloProprieta);
@@ -393,7 +390,7 @@ public class VeicoloProprietaResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void deleteVeicoloProprieta() throws Exception {
         // Initialize the database
         veicoloProprietaRepository.saveAndFlush(veicoloProprieta);

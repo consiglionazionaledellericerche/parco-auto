@@ -17,11 +17,11 @@
 
 package it.cnr.si.web.rest;
 
+import it.cnr.si.ParcoautoApp;
 import it.cnr.si.config.audit.AuditEventConverter;
 import it.cnr.si.domain.PersistentAuditEvent;
-import it.cnr.si.service.AuditEventService;
-import it.cnr.si.ParcoautoApp;
 import it.cnr.si.repository.PersistenceAuditEventRepository;
+import it.cnr.si.service.AuditEventService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -19,7 +19,6 @@ package it.cnr.si.web.rest;
 
 import it.cnr.si.domain.AssicurazioneVeicolo;
 import it.cnr.si.domain.Veicolo;
-import it.cnr.si.security.DomainUserDetailsServiceIntTest;
 import it.cnr.si.web.rest.errors.ExceptionTranslator;
 import org.junit.Ignore;
 import it.cnr.si.ParcoautoApp;
@@ -43,9 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -258,7 +255,7 @@ public class AssicurazioneVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getAllAssicurazioneVeicolos() throws Exception {
         // Initialize the database
         assicurazioneVeicoloRepository.saveAndFlush(assicurazioneVeicolo);
@@ -305,7 +302,7 @@ public class AssicurazioneVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void updateAssicurazioneVeicolo() throws Exception {
         // Initialize the database
         assicurazioneVeicoloRepository.saveAndFlush(assicurazioneVeicolo);
@@ -343,7 +340,7 @@ public class AssicurazioneVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void updateNonExistingAssicurazioneVeicolo() throws Exception {
         int databaseSizeBeforeUpdate = assicurazioneVeicoloRepository.findAll().size();
 
@@ -362,7 +359,7 @@ public class AssicurazioneVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void deleteAssicurazioneVeicolo() throws Exception {
         // Initialize the database
         assicurazioneVeicoloRepository.saveAndFlush(assicurazioneVeicolo);

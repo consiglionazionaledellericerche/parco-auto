@@ -20,7 +20,6 @@ package it.cnr.si.web.rest;
 import it.cnr.si.ParcoautoApp;
 import it.cnr.si.domain.*;
 import it.cnr.si.repository.VeicoloRepository;
-import it.cnr.si.security.DomainUserDetailsServiceIntTest;
 import it.cnr.si.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -176,7 +175,7 @@ public class VeicoloResourceIntTest {
     @Test
     @Ignore
     @Transactional
-    @WithMockUser(username = DomainUserDetailsServiceIntTest.ACE_USER_ADMIN, roles = {"USER", "ADMIN"})
+    @WithMockUser(username = "valerio.diego", roles = {"USER", "ADMIN"})
     public void createVeicolo() throws Exception {
         int databaseSizeBeforeCreate = veicoloRepository.findAll().size();
 
@@ -405,7 +404,7 @@ public class VeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getAllVeicolos() throws Exception {
         // Initialize the database
         veicoloRepository.saveAndFlush(veicolo);
@@ -431,7 +430,7 @@ public class VeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getVeicolo() throws Exception {
         // Initialize the database
         veicoloRepository.saveAndFlush(veicolo);
@@ -466,7 +465,7 @@ public class VeicoloResourceIntTest {
     @Test
     @Ignore
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void updateVeicolo() throws Exception {
         // Initialize the database
         veicoloRepository.saveAndFlush(veicolo);
@@ -516,7 +515,7 @@ public class VeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username = DomainUserDetailsServiceIntTest.ACE_USER_ADMIN, roles = {"USER", "ADMIN"})
+    @WithMockUser(username = "valerio.diego", roles = {"USER", "ADMIN"})
     public void updateNonExistingVeicolo() throws Exception {
         int databaseSizeBeforeUpdate = veicoloRepository.findAll().size();
 
@@ -535,7 +534,7 @@ public class VeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username = DomainUserDetailsServiceIntTest.ACE_USER_ADMIN, roles = {"USER", "SUPERUSER"})
+    @WithMockUser(username = "valerio.diego", roles = {"USER", "SUPERUSER"})
     public void deleteVeicolo() throws Exception {
         // Initialize the database
         veicoloRepository.saveAndFlush(veicolo);

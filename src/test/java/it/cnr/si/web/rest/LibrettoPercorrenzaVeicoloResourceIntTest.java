@@ -19,9 +19,7 @@ package it.cnr.si.web.rest;
 
 import it.cnr.si.domain.LibrettoPercorrenzaVeicolo;
 import it.cnr.si.domain.Veicolo;
-import it.cnr.si.security.DomainUserDetailsServiceIntTest;
 import it.cnr.si.web.rest.errors.ExceptionTranslator;
-import org.junit.Ignore;
 import it.cnr.si.ParcoautoApp;
 
 import it.cnr.si.repository.LibrettoPercorrenzaVeicoloRepository;
@@ -186,7 +184,7 @@ public class LibrettoPercorrenzaVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getAllLibrettoPercorrenzaVeicolos() throws Exception {
         // Initialize the database
         librettoPercorrenzaVeicoloRepository.saveAndFlush(librettoPercorrenzaVeicolo);
@@ -227,7 +225,7 @@ public class LibrettoPercorrenzaVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void updateLibrettoPercorrenzaVeicolo() throws Exception {
         // Initialize the database
         librettoPercorrenzaVeicoloRepository.saveAndFlush(librettoPercorrenzaVeicolo);
@@ -259,7 +257,7 @@ public class LibrettoPercorrenzaVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void updateNonExistingLibrettoPercorrenzaVeicolo() throws Exception {
         int databaseSizeBeforeUpdate = librettoPercorrenzaVeicoloRepository.findAll().size();
 
@@ -278,7 +276,7 @@ public class LibrettoPercorrenzaVeicoloResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void deleteLibrettoPercorrenzaVeicolo() throws Exception {
         // Initialize the database
         librettoPercorrenzaVeicoloRepository.saveAndFlush(librettoPercorrenzaVeicolo);

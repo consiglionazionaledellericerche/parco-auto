@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class UserDTO {
 
-    private Long id;
+    private String id;
 
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
@@ -70,16 +70,6 @@ public class UserDTO {
 
     private Set<String> authorities;
 
-    public String getIstituto() {
-        return istituto;
-    }
-
-    public void setIstituto(String istituto) {
-        this.istituto = istituto;
-    }
-
-    private String istituto;
-
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -102,11 +92,11 @@ public class UserDTO {
             .collect(Collectors.toSet());
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

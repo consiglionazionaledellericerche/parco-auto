@@ -19,12 +19,8 @@ package it.cnr.si.web.rest;
 
 import it.cnr.si.domain.Veicolo;
 import it.cnr.si.domain.VeicoloNoleggio;
-import it.cnr.si.security.DomainUserDetailsServiceIntTest;
-import org.junit.Ignore;
 import it.cnr.si.ParcoautoApp;
 
-import it.cnr.si.domain.VeicoloNoleggio;
-import it.cnr.si.domain.Veicolo;
 import it.cnr.si.repository.VeicoloNoleggioRepository;
 import it.cnr.si.web.rest.errors.ExceptionTranslator;
 
@@ -46,13 +42,10 @@ import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
-import static it.cnr.si.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -267,7 +260,7 @@ public class VeicoloNoleggioResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void getAllVeicoloNoleggios() throws Exception {
         // Initialize the database
         veicoloNoleggioRepository.saveAndFlush(veicoloNoleggio);
@@ -324,7 +317,7 @@ public class VeicoloNoleggioResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","SUPERUSER"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","SUPERUSER"})
     public void updateVeicoloNoleggio() throws Exception {
         // Initialize the database
         veicoloNoleggioRepository.saveAndFlush(veicoloNoleggio);
@@ -390,7 +383,7 @@ public class VeicoloNoleggioResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser(username= DomainUserDetailsServiceIntTest.ACE_USER_ADMIN,roles={"USER","ADMIN"})
+    @WithMockUser(username= "valerio.diego",roles={"USER","ADMIN"})
     public void deleteVeicoloNoleggio() throws Exception {
         // Initialize the database
         veicoloNoleggioRepository.saveAndFlush(veicoloNoleggio);

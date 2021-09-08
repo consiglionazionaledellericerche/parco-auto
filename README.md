@@ -1,5 +1,5 @@
 # parcoauto
-This application was generated using JHipster 5.3.4, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.3.4](https://www.jhipster.tech/documentation-archive/v5.3.4).
+This application was generated using JHipster 5.4.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v5.4.2](https://www.jhipster.tech/documentation-archive/v5.4.2).
 
 ## Development
 
@@ -26,6 +26,64 @@ specifying a newer version in [package.json](package.json). You can also run `np
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
+
+## OAuth 2.0 / OpenID Connect
+
+Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
+
+To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
+
+```
+docker-compose -f src/main/docker/keycloak.yml up
+```
+
+The security settings in `src/main/resources/application.yml` are configured for this image.
+
+```yaml
+security:
+    basic:
+        enabled: false
+    oauth2:
+        client:
+            accessTokenUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+            userAuthorizationUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+            clientId: web_app
+            clientSecret: web_app
+            scope: openid profile email
+        resource:
+            userInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+```
+
+### Okta
+
+If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.oktapreview.com`.
+
+Modify `src/main/resources/application.yml` to use your Okta settings.
+
+```yaml
+security:
+    basic:
+        enabled: false
+    oauth2:
+        client:
+            accessTokenUri: https://{yourOktaDomain}.com/oauth2/default/v1/token
+            userAuthorizationUri: https://{yourOktaDomain}.com/oauth2/default/v1/authorize
+            clientId: {clientId}
+            clientSecret: {clientSecret}
+            scope: openid profile email
+        resource:
+            userInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/userinfo
+```
+
+Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login` as a Login Redirect URI. Click **Done** and copy the client ID and secret into your `application.yml` file.
+
+> **TIP:** If you want to use the [Ionic Module for JHipster](https://www.npmjs.com/package/generator-jhipster-ionic), you'll need to add `http://localhost:8100` as a **Login redirect URI** as well.
+
+Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Create a user (e.g., "admin@jhipster.org" with password "Java is hip in 2017!"). Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
+
+Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "roles", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
+
+After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
 
 ### Service workers
 
@@ -146,7 +204,7 @@ To stop it and remove the container, run:
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw verify -Pprod dockerfile:build dockerfile:tag@version dockerfile:tag@commit
+    ./mvnw package -Pprod jib:dockerBuild
 
 Then run:
 
@@ -159,14 +217,14 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [JHipster Homepage and latest documentation]: https://www.jhipster.tech
-[JHipster 5.3.4 archive]: https://www.jhipster.tech/documentation-archive/v5.3.4
+[JHipster 5.4.2 archive]: https://www.jhipster.tech/documentation-archive/v5.4.2
 
-[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v5.3.4/development/
-[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v5.3.4/docker-compose
-[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v5.3.4/production/
-[Running tests page]: https://www.jhipster.tech/documentation-archive/v5.3.4/running-tests/
-[Code quality page]: https://www.jhipster.tech/documentation-archive/v5.3.4/code-quality/
-[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v5.3.4/setting-up-ci/
+[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v5.4.2/development/
+[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v5.4.2/docker-compose
+[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v5.4.2/production/
+[Running tests page]: https://www.jhipster.tech/documentation-archive/v5.4.2/running-tests/
+[Code quality page]: https://www.jhipster.tech/documentation-archive/v5.4.2/code-quality/
+[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v5.4.2/setting-up-ci/
 
 
 [Node.js]: https://nodejs.org/
