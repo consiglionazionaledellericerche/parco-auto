@@ -110,6 +110,11 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                KEYCLOAKLOGOUTURL: `'http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/protocol/openid-connect/logout'`
+            }
+        }),
         process.env.JHI_DISABLE_WEBPACK_LOGS
             ? null
             : new SimpleProgressWebpackPlugin({

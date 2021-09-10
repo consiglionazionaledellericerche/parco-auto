@@ -111,6 +111,11 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                KEYCLOAKLOGOUTURL: `'https://sso.cnr.it/auth/realms/cnr/protocol/openid-connect/logout'`
+            }
+        }),
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
