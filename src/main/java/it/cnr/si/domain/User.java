@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2020 Consiglio Nazionale delle Ricerche
- *
- *                 This program is free software: you can redistribute it and/or modify
- *                 it under the terms of the GNU Affero General Public License as
- *                 published by the Free Software Foundation, either version 3 of the
- *                 License, or (at your option) any later version.
- *
- *                 This program is distributed in the hope that it will be useful,
- *                 but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *                 GNU Affero General Public License for more details.
- *
- *                 You should have received a copy of the GNU Affero General Public License
- *                 along with this program. If not, see https://www.gnu.org/licenses/
- */
-
 package it.cnr.si.domain;
 
 import it.cnr.si.config.Constants;
@@ -22,8 +5,6 @@ import it.cnr.si.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.validation.constraints.Email;
 
 import javax.persistence.*;
@@ -35,25 +16,34 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.time.Instant;
 
 /**
  * A user.
  */
 @Entity
 @Table(name = "jhi_user")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+
 public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    private Long id;
 
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     @Column(length = 50, unique = true, nullable = false)
     private String login;
+
+    @JsonIgnore
+    @NotNull
+    @Size(min = 60, max = 60)
+    @Column(name = "password_hash", length = 60, nullable = false)
+    private String password;
 
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
@@ -80,21 +70,34 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "image_url", length = 256)
     private String imageUrl;
 
+    @Size(max = 20)
+    @Column(name = "activation_key", length = 20)
+    @JsonIgnore
+    private String activationKey;
+
+    @Size(max = 20)
+    @Column(name = "reset_key", length = 20)
+    @JsonIgnore
+    private String resetKey;
+
+    @Column(name = "reset_date")
+    private Instant resetDate = null;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,6 +108,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     // Lowercase the login before saving it in database
     public void setLogin(String login) {
         this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -145,6 +156,30 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public String getActivationKey() {
+        return activationKey;
+    }
+
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
+
+    public String getResetKey() {
+        return resetKey;
+    }
+
+    public void setResetKey(String resetKey) {
+        this.resetKey = resetKey;
+    }
+
+    public Instant getResetDate() {
+        return resetDate;
+    }
+
+    public void setResetDate(Instant resetDate) {
+        this.resetDate = resetDate;
     }
 
     public String getLangKey() {
@@ -191,6 +226,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
+            ", activationKey='" + activationKey + '\'' +
             "}";
     }
 }
