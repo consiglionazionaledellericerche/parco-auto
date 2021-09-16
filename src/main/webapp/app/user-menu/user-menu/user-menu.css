@@ -1,0 +1,62 @@
+.profile-image {
+    margin: -10px 0px;
+}
+.usermenu-profile-image-lg {
+    margin-bottom: 1.5rem;
+}
+.usermenu-main {
+    margin: 20px 33px;
+    text-align: center;
+    white-space: nowrap;
+}
+.usermenu-main img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.usermenu-main p {
+    margin: 0;
+}
+.usermenu-sub {
+    text-align: center;
+}
+.usermenu-sub p {
+    margin: 0;
+}
+.dropdown-divider {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+}
+.rounded-pill {
+    border-radius: 50rem !important;
+}
+#editAvatar {
+    width: 120px;
+    margin: 0 auto 1rem auto;
+}
+.edit-image-icon {
+    /* float:right; */
+    margin-top: calc(-1.5rem - 30px);
+    margin-left: auto;
+    margin-right: 0;
+    position: relative;
+    z-index: 9999;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.edit-image-icon fa-icon {
+    display: block;
+    font-size: 14px;
+}
+a {
+    font-weight: 400;
+}
+#user-menu-toggle::after {
+    display: none;
+}

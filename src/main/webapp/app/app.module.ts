@@ -19,6 +19,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
+import { UserMenuModule } from './user-menu/user-menu.module';
 
 import { registerLocaleData } from '@angular/common';
 import localeIt from '@angular/common/locales/it';
@@ -32,7 +33,8 @@ registerLocaleData(localeIt);
         ParcoautoSharedModule,
         ParcoautoCoreModule,
         ParcoautoHomeModule,
-        ParcoautoEntityModule
+        ParcoautoEntityModule,
+        UserMenuModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],

@@ -1,0 +1,48 @@
+<li ngbDropdown placement="bottom-right" class="nav-item">
+    <a class="nav-link" ngbDropdownToggle id="user-menu-toggle">
+        <img
+            class="profile-image img-circle" alt="Avatar"
+            ngxGravatar
+            [fallback]="gravatarFallback"
+            [backgroundColor]="gravatarBackgroundColor"
+            [email]="getEmail()"
+            [src]="getAvatarImageUrl()"
+        />
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+        <div class="usermenu-main">
+            <img
+                class="usermenu-profile-image-lg"
+                alt="Avatar"
+                size="120"
+                ngxGravatar
+                [fallback]="gravatarFallback"
+                [backgroundColor]="gravatarBackgroundColor"
+                [email]="getEmail()"
+                [src]="avatarImageUrl"
+            />
+            <p id="editAvatar">
+                <a
+                    [href]="editAvatarImageUrl"
+                    target="_blank"
+                    class="btn btn-light edit-image-icon shadow-sm"
+                >
+                    <fa-icon [icon]="'camera'" [fixedWidth]="true"></fa-icon>
+                </a>
+            </p>
+            <p class="h6">{{getName()}}</p>
+            <p>{{getLogin()}}</p>
+            <p class="mt-4">
+                <a [href]="manageAccountUrl" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill">
+                    <span>Gestisci il tuo account</span>
+                </a>
+            </p>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="usermenu-sub">
+            <button type="button" (click)="logout()" class="btn btn-outline-secondary">
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</li>
