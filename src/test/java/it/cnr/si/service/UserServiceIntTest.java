@@ -125,6 +125,7 @@ public class UserServiceIntTest {
         userDetails.put("email", user.getEmail());
         userDetails.put("picture", user.getImageUrl());
         userDetails.put("locale", "en_US");
+        userDetails.put("username_cnr", "nome.cognome");
 
         OAuth2Authentication authentication = createMockOAuth2AuthenticationWithDetails(userDetails);
 
