@@ -38,7 +38,7 @@ maven-deploy:
 maven-install:
   stage: deploy
   image: maven:3-jdk-8
-  script: "mvn clean install $MAVEN_CLI_OPTS"
+  script: "mvn clean install -DskipTests $MAVEN_CLI_OPTS"
   artifacts:
     paths:
       - target/*.war
