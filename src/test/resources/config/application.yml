@@ -82,13 +82,6 @@ jhipster:
     mail:
         from: test@localhost
         base-url: http://127.0.0.1:8080
-    security:
-        authentication:
-            jwt:
-                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: MmE2OTUyYTYxZDZkN2RhMWJhZTVkM2YzYjA5ZGM0MmFhMWYxODhhNzUwOWI1NmM0OTBkYThmNWNjYWJhMTJjMDQ3YzQyMTZmZjdkMTFlYzA4MmNlZGY1OTY4YWNmMzYyNmMxYmQ4OGZjYzRiMGI0OGM3ZTMxMWRmNDNlMWFiYTE=
-                # Token is valid 24 hours
-                token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         logs: # Reports Dropwizard metrics in the logs
