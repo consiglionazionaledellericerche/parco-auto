@@ -144,5 +144,4 @@ Desktop.ini
 ######################
 .eslintcache
 /.mvn/
-/package-lock.json
 /_build/
