@@ -1,6 +1,6 @@
 import './vendor.ts';
 
-import { NgModule, Injector, LOCALE_ID } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -20,10 +20,6 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ActiveMenuDirective, ErrorComponent } from './layouts';
-
-import { registerLocaleData } from '@angular/common';
-import localeIt from '@angular/common/locales/it';
-registerLocaleData(localeIt);
 
 @NgModule({
     imports: [
@@ -56,10 +52,6 @@ registerLocaleData(localeIt);
             useClass: NotificationInterceptor,
             multi: true,
             deps: [Injector]
-        },
-        {
-            provide: LOCALE_ID,
-            useValue: 'it-IT'
         }
     ],
     bootstrap: [JhiMainComponent]
