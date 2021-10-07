@@ -25,6 +25,7 @@
     "flatpickr": "4.5.7",
     "moment": "2.22.2",
     "ng-jhipster": "0.5.4",
+    "ngx-cnr-uict-sso": "^0.1.6",
     "ngx-cookie": "2.0.1",
     "ngx-infinite-scroll": "0.5.1",
     "ngx-webstorage": "2.0.1",
@@ -104,6 +105,7 @@
     ]
   },
   "scripts": {
+    "precommit": "lint-staged",
     "prettier:format": "prettier --write \"src/**/*.{ts,css,scss}\"",
     "lint": "tslint --project tsconfig.json -e 'node_modules/**'",
     "lint:fix": "npm run lint -- --fix",

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { VERSION } from 'app/app.constants';
-import { JhiLanguageHelper, Principal, LoginService } from 'app/core';
+import { Account, JhiLanguageHelper, Principal, LoginService } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { ProfileService } from '../profiles/profile.service';
     styleUrls: ['navbar.scss']
 })
 export class NavbarComponent implements OnInit {
+    @Input() account = {} as Account;
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
