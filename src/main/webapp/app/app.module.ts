@@ -35,7 +35,7 @@ registerLocaleData(localeIt);
         ParcoautoEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, ActiveMenuDirective],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
