@@ -150,10 +150,12 @@ public class UserService {
         List<Authority> authorities = new ArrayList<>();
         List<BossDto> bossDtos = new ArrayList<>();
         List<SimpleRuoloWebDto> srwDtos = new ArrayList<>();
+        Boolean principalIsInAce = true;
         try {
             bossDtos = aceService.ruoliUtenteAttivi(principal);
             srwDtos = aceService.ruoliAttivi(principal);
         } catch (Exception e) {
+            principalIsInAce = false;
             System.out.println (e.getMessage());
         }
         authorities.addAll(
@@ -191,9 +193,11 @@ public class UserService {
             //
         }
 
-        Authority authUser = new Authority();
-        authUser.setName(AuthoritiesConstants.USER);
-        authorities.add(authUser);
+        if(principalIsInAce) {
+            Authority authUser = new Authority();
+            authUser.setName(AuthoritiesConstants.USER);
+            authorities.add(authUser);
+        }
         user.getAuthorities().addAll(authorities);
 
         try {
