@@ -15,7 +15,9 @@ export class AuthServerProvider {
             const { protocol, host } = window.location;
             const redirectUri = `${protocol}//${host}/#/`;
             const logoutUrl = `${KEYCLOAKLOGOUTURL}?redirect_uri=${encodeURIComponent(redirectUri)}`;
-            window.location.href = logoutUrl;
+            setTimeout(() => {
+                window.location.href = logoutUrl;
+            }, 0);
             return response;
         });
     }
