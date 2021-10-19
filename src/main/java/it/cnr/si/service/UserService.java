@@ -147,7 +147,7 @@ public class UserService {
 
         //---
         String principal = ((String) details.get("username_cnr")).toLowerCase();
-        List<Authority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         List<BossDto> bossDtos = new ArrayList<>();
         List<SimpleRuoloWebDto> srwDtos = new ArrayList<>();
         Boolean principalIsInAce = true;
@@ -164,11 +164,7 @@ public class UserService {
                 .filter(bossDto -> {
                     return !(bossDto.getEntitaOrganizzativa() != null && bossDto.getRuolo().getTipoRuolo().equals(TipoRuolo.ROLE_ADMIN));
                 })
-                .map(a -> {
-                    Authority auth = new Authority();
-                    auth.setName(Optional.ofNullable(a.getRuolo().getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER));
-                    return auth;
-                })
+                .map(a -> new SimpleGrantedAuthority(Optional.ofNullable(a.getRuolo().getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER)))
                 .distinct()
                 .collect(Collectors.toList()));
 
@@ -181,53 +177,50 @@ public class UserService {
             authorities.addAll(
                 srwDtos.stream()
                     .filter(ruoloWebDto -> contestoACE.contains(ruoloWebDto.getContesto().getSigla()))
-                    .map(a -> {
-                        Authority auth = new Authority();
-                        auth.setName(Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER));
-                        return auth;
-                    })
+                    .map(a -> new SimpleGrantedAuthority(Optional.ofNullable(a.getTipoRuolo()).map(TipoRuolo::name).orElse(AuthoritiesConstants.USER)))
                     .distinct()
                     .collect(Collectors.toList()));
         }
-        if (authorities.isEmpty()) {
-            //
-        }
 
-        if(principalIsInAce) {
-            Authority authUser = new Authority();
-            authUser.setName(AuthoritiesConstants.USER);
-            authorities.add(authUser);
-        }
-        user.getAuthorities().addAll(authorities);
 
-        try {
-            SimpleUtenteWebDto utenteWebDto = aceService.getUtente(principal);
-            if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
-                List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
-                    aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
-                //return new ACEAuthentication(utente, utenteWebDto, authentication, authorities,
-                //    Stream.concat(
-                //        entitaOrganizzativaAssegnata.map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct(),
-                //        entitaOrganizzativeStruttura.stream().map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct()
-                //    ).collect(Collectors.toList())
-                //);
+        List<String> sedi = null;
+        SimpleUtenteWebDto utenteWebDto = null;
+
+        if (!authorities.isEmpty()) {
+
+            if (principalIsInAce) {
+                GrantedAuthority authUser = new SimpleGrantedAuthority(AuthoritiesConstants.USER);
+                authorities.add(authUser);
             }
-        } catch (FeignException e) {
-            log.warn("Person not found for principal {}", principal);
+            // user.getAuthorities().addAll(authorities);
+
+
+            try {
+                utenteWebDto = aceService.getUtente(principal);
+                if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
+                    List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
+                        aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
+
+                    sedi = Stream.concat(
+                        entitaOrganizzativaAssegnata.map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct(),
+                        entitaOrganizzativeStruttura.stream().map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct()
+                    ).collect(Collectors.toList());
+                }
+            } catch (FeignException e) {
+                log.warn("Person not found for principal {}", principal);
+            }
+
+            //---
+
+            Set<Authority> userAuthorities = new HashSet<>();
+            for (GrantedAuthority authority : authorities) {
+                Authority auth = new Authority();
+                auth.setName(authority.getAuthority());
+                userAuthorities.add(auth);
+            }
+            user.getAuthorities().addAll(userAuthorities);
         }
-
-
-        //---
-
-        Set<Authority> userAuthorities = new HashSet<>();
-        for(GrantedAuthority authority: grantedAuthorities){
-            Authority auth = new Authority();
-            auth.setName(authority.getAuthority());
-            userAuthorities.add(auth);
-        }
-        user.getAuthorities().addAll(userAuthorities);
-
-        UsernamePasswordAuthenticationToken token = getToken(details, user, grantedAuthorities);
+        ACEAuthentication token = getToken(details, utenteWebDto, user, authorities, sedi);
         Object oauth2AuthenticationDetails = authentication.getDetails(); // should be an OAuth2AuthenticationDetails
         authentication = new OAuth2Authentication(authentication.getOAuth2Request(), token);
         authentication.setDetails(oauth2AuthenticationDetails); // must be present in a gateway for TokenRelayFilter to work
@@ -236,14 +229,13 @@ public class UserService {
         return new UserDTO(user);
     }
 
-    private static UsernamePasswordAuthenticationToken getToken(Map<String, Object> details, User user, Set<GrantedAuthority> grantedAuthorities) {
+    private static ACEAuthentication getToken(Map<String, Object> details, SimpleUtenteWebDto simpleUtenteWebDto, User user, Set<GrantedAuthority> grantedAuthorities, List<String> sedi) {
         // create UserDetails so #{principal.username} works
         UserDetails userDetails =
             new org.springframework.security.core.userdetails.User(user.getLogin(),
                 "N/A", grantedAuthorities);
         // update Spring Security Authorities to match groups claim from IdP
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-            userDetails, "N/A", grantedAuthorities);
+        ACEAuthentication token = new ACEAuthentication(userDetails, simpleUtenteWebDto, "N/A", grantedAuthorities, null);
         token.setDetails(details);
         return token;
     }
