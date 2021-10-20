@@ -235,7 +235,7 @@ public class UserService {
             new org.springframework.security.core.userdetails.User(user.getLogin(),
                 "N/A", grantedAuthorities);
         // update Spring Security Authorities to match groups claim from IdP
-        ACEAuthentication token = new ACEAuthentication(userDetails, simpleUtenteWebDto, "N/A", grantedAuthorities, null);
+        ACEAuthentication token = new ACEAuthentication(userDetails, simpleUtenteWebDto, "N/A", grantedAuthorities, sedi);
         token.setDetails(details);
         return token;
     }
