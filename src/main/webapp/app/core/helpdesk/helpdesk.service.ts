@@ -16,20 +16,14 @@ export class HelpDeskService {
     create(problem: IProblem, allegatoContentType: string, allegatoFileName: string): Observable<EntityResponseType> {
         return this.http.post<IProblem>(this.resourceUrl, problem, {
             observe: 'response',
-            params: {
-                allegatoContentType: allegatoContentType,
-                allegatoFileName: allegatoFileName
-            }
+            params: { allegatoContentType, allegatoFileName }
         });
     }
 
     update(problem: IProblem, allegatoContentType: string, allegatoFileName: string): Observable<EntityResponseType> {
         return this.http.put<IProblem>(this.resourceUrl, problem, {
             observe: 'response',
-            params: {
-                allegatoContentType: allegatoContentType,
-                allegatoFileName: allegatoFileName
-            }
+            params: { allegatoContentType, allegatoFileName }
         });
     }
 }
