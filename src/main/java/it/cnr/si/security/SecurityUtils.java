@@ -22,6 +22,7 @@ import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDt
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +60,9 @@ public final class SecurityUtils {
     private static Optional<List<String>> getSede() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
-            .filter(ACEAuthentication.class::isInstance)
+            .filter(OAuth2Authentication.class::isInstance)
+            .map(OAuth2Authentication.class::cast)
+            .map(OAuth2Authentication::getUserAuthentication)
             .map(ACEAuthentication.class::cast)
             .map(ACEAuthentication::getSede);
     }
