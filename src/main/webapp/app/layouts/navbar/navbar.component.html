@@ -17,8 +17,14 @@
 
 <nav class="navbar navbar-dark navbar-expand-md jh-navbar">
     <div class="jh-logo-container float-left">
-        <a class="jh-navbar-toggler d-lg-none float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-            <fa-icon [icon]="'bars'"></fa-icon>
+        <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+            <ngx-cnr-uict-sso-user-menu [account]="account" [buttonSize]="'32px'" [avatarSize]="'24px'" (logoutCallback)="logout()"></ngx-cnr-uict-sso-user-menu>
+        </div>
+        <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+            <ngx-cnr-uict-sso-apps-menu [account]="account" [buttonSize]="'32px'" [iconSize]="'20px'"></ngx-cnr-uict-sso-apps-menu>
+        </div>
+        <a class="h-menu-toggler jh-navbar-toggler d-lg-none float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
+            <fa-icon [icon]="'bars'" style="display: flex; align-items: center"></fa-icon>
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
             <span class="logo-img"></span>
@@ -257,7 +263,7 @@
                     </span>
                 </a>
             </li>
-            <li class="nav-item d-flex">
+            <li class="nav-item d-none d-md-flex">
                 <ngx-cnr-uict-sso-apps-menu [account]="account" class="mr-2"></ngx-cnr-uict-sso-apps-menu>
                 <ngx-cnr-uict-sso-user-menu [account]="account" (logoutCallback)="logout()"></ngx-cnr-uict-sso-user-menu>
             </li>
