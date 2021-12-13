@@ -1,0 +1,103 @@
+# This repository adheres to the publiccode.yml standard by including this
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+name: parcoauto
+releaseDate: '2021-12-09'
+landingURL: 'https://parcoauto.cnr.it'
+url: 'https://github.com/consiglionazionaledellericerche/parco-auto'
+softwareVersion: 2.0.14
+developmentStatus: stable
+softwareType: standalone/web
+platforms:
+  - web
+  - linux
+usedBy:
+  - Consiglio Nazionale delle Ricerche
+categories:
+  - it-development
+  - application-development
+logo: docs/logo.png
+maintenance:
+  type: internal
+  contacts:
+    - name: Marco Spasiano
+      email: marco.spasiano@cnr.it
+      affiliation: Consiglio Nazionale delle Ricerche
+legal:
+  license: AGPL-3.0-or-later
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - it
+it:
+  riuso:
+    codiceIPA: cnr
+  conforme:
+    lineeGuidaDesign: yes
+    modelloInteroperabilita: yes
+    misureMinimeSicurezza: yes
+    gdpr: yes
+description:
+  it:
+    longDescription: >
+      Parco Auto permette di gestire il parco macchine di un ente, è possibile inserire sia Veicoli di Propietà che veicoli a noleggio, inoltre gestisce le multe con la possibilità di allegare un file e il bollo con la scadenza in caso di veicolo di proprietà.
+
+      ## **VEICOLO**
+
+        Premendo su “Veicolo” dal menù “Elenco funzionalità” si accede alla schermata “Elenco Veicoli”
+        dalla quale si potrà visionare l’elenco di tutti i veicoli della Struttura se inseriti.
+
+      ## **VEICOLO NOLEGGIO**
+
+        Per la codifica dei un veicolo a noleggio dal menù “Elenco funzionalità” occorre cliccare sull’apposito campo “Veicolo Noleggio”
+        e cliccare su “Aggiungi un nuovo Veicolo a Noleggio” .
+
+      ## **VEICOLO PROPRIETÀ**
+
+        Sarà quindi necessario compilare le sottosezioni “Dati veicolo” e “Dati immatricolazione” trascurando le altre.
+            Nella sezione “Dati veicolo”, in fase di primo inserimento sarà innanzitutto richiesto di scegliere il veicolo da caricare
+            in proprietà mediante scelta dall’apposito menù a tendina tra i veicoli già caricati per la Struttura.
+            Nel form occorrerà inserire tutti i dati obbligatori e in particolare i dati relativi all’immatricolazione.
+            In fase di salvataggio se la targa è stata correttamente inserita nella procedura SIGLA il sistema sarà in grado di riportare automaticamente
+            l’etichetta del veicolo con il quale lo stesso è stato inventariato sul programma di contabilità.
+            Dopo aver salvato si troverà il veicolo inserito nella lista dei veicoli di proprietà della Struttura.
+
+
+    localisedName: Parco Auto
+    genericName: Parco Auto
+    shortDescription: >-
+        Parco Auto permette di gestire il parco macchine di un ente
+    documentation: >-
+      https://consiglionazionaledellericerche.github.io/parco-auto
+    apiDocumentation: 'https://github.com/consiglionazionaledellericerche/parco-auto'
+    screenshots:
+      - docs/media/image1.png
+      - docs/media/image2.png
+      - docs/media/image3.png
+      - docs/media/image4.png
+      - docs/media/image5.png
+      - docs/media/image6.png
+      - docs/media/image7.png
+      - docs/media/image8.png
+      - docs/media/image9.png
+      - docs/media/image10.png
+      - docs/media/image11.png
+      - docs/media/image12.png
+      - docs/media/image13.png
+      - docs/media/image14.png
+      - docs/media/image15.png
+      - docs/media/image16.png
+      - docs/media/image17.png
+      - docs/media/image18.png
+      - docs/media/image19.png
+      - docs/media/image20.png
+    features:
+      - VEICOLO PROPRIETÀ
+      - VEICOLO NOLEGGIO
+      - LIBRETTO PERCORRENZA VEICOLO
+      - ASSICURAZIONE VEICOLO
+      - BOLLO
+      - MULTA
+      - VALIDAZIONE DIRETTORE
