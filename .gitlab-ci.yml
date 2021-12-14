@@ -5,6 +5,7 @@ services:
 stages:
   - deploy
   - build
+  - publiccode-parser
   - catapult
   - release
   - deploy_prod_container
@@ -130,6 +131,11 @@ perform-maven-central:
     - tags
   when: manual
 
+publiccode-parser:
+    image:
+        name: italia/publiccode-parser-go:v1.2.3
+        entrypoint: [""]
+    script: pcvalidate publiccode.yml
 
 
 #la release è opzionale e manuale.
