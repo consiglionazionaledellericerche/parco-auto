@@ -5,7 +5,6 @@
 publiccodeYmlVersion: '0.2'
 name: parcoauto
 releaseDate: '2021-12-09'
-landingURL: 'https://parcoauto.cnr.it'
 url: 'https://github.com/consiglionazionaledellericerche/parco-auto'
 softwareVersion: 2.0.14
 developmentStatus: stable
@@ -75,7 +74,6 @@ description:
     screenshots:
       - docs/media/image1.png
       - docs/media/image2.png
-      - docs/media/image3.png
       - docs/media/image4.png
       - docs/media/image5.png
       - docs/media/image6.png
