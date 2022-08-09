@@ -19,7 +19,7 @@ cd parco-auto
 Per avviare il sistema di autenticazione 
 
 ```bash
-docker build -f Dockerfile.keycloak . -t keycloak-parcoauto:latest && docker run -p 8180:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin keycloak-parcoauto:latest
+docker build -f Dockerfile.keycloak . -t keycloak-parcoauto:latest && docker run -d -p 8180:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin keycloak-parcoauto:latest
 ```
 
 ### Comandi
