@@ -19,6 +19,7 @@ import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleRuoloWebDto;
 import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,10 +53,10 @@ public class UserService {
 
     private final AceService aceService;
 
-    @Value("#{'${ace.contesto}'.split(',')}")
+    @Value("#{'${ace.contesto:#{null}}'.split(',')}")
     private List<String> contestoACE;
 
-    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, AceService aceService) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, @Autowired(required = false) AceService aceService) {
         this.userRepository = userRepository;
         this.authorityRepository = authorityRepository;
         this.aceService = aceService;
@@ -146,7 +147,8 @@ public class UserService {
         );
 
         //---
-        String principal = ((String) details.get("username_cnr")).toLowerCase();
+        String principal = ((String)Optional.ofNullable(details.get("username_cnr"))
+            .orElse(details.get("preferred_username"))).toLowerCase();
         Set<GrantedAuthority> authorities = new HashSet<>();
         List<BossDto> bossDtos = new ArrayList<>();
         List<SimpleRuoloWebDto> srwDtos = new ArrayList<>();
@@ -158,6 +160,7 @@ public class UserService {
             principalIsInAce = false;
             System.out.println (e.getMessage());
         }
+        authorities.addAll(grantedAuthorities);
         authorities.addAll(
             bossDtos.stream()
                 .filter(bossDto -> contestoACE.contains(bossDto.getRuolo().getContesto().getSigla()))
@@ -196,15 +199,17 @@ public class UserService {
 
 
             try {
-                utenteWebDto = aceService.getUtente(principal);
-                if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
-                    List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
-                        aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
+                if (Optional.ofNullable(aceService).isPresent()) {
+                    utenteWebDto = aceService.getUtente(principal);
+                    if (Optional.ofNullable(utenteWebDto.getPersona()).isPresent()) {
+                        List<SimpleEntitaOrganizzativaWebDto> entitaOrganizzativeStruttura =
+                            aceService.findEntitaOrganizzativeStruttura(principal, LocalDate.now(), TipoAppartenenza.SEDE);
 
-                    sedi = Stream.concat(
-                        entitaOrganizzativaAssegnata.map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct(),
-                        entitaOrganizzativeStruttura.stream().map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct()
-                    ).collect(Collectors.toList());
+                        sedi = Stream.concat(
+                            entitaOrganizzativaAssegnata.map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct(),
+                            entitaOrganizzativeStruttura.stream().map(SimpleEntitaOrganizzativaWebDto::getCdsuo).distinct()
+                        ).collect(Collectors.toList());
+                    }
                 }
             } catch (FeignException e) {
                 log.warn("Person not found for principal {}", principal);
@@ -241,25 +246,29 @@ public class UserService {
     }
 
     private  List<String> getRoles(Map<String, Object> details) {
+        return Optional.ofNullable(details.get("contexts"))
+            .filter(Map.class::isInstance)
+            .map(Map.class::cast)
+            .map(map -> {
+                Map context = Optional.ofNullable(map.get("parcoauto-app"))
+                    .filter(Map.class::isInstance)
+                    .map(Map.class::cast)
+                    .orElse(Collections.emptyMap());
+                return Optional.ofNullable(context.get("roles"))
+                    .filter(List.class::isInstance)
+                    .map(List.class::cast)
+                    .orElse(Collections.emptyList());
 
-        List list = new ArrayList();
-        try {
-            Map context = (Map) ((Map) details.get("contexts")).get("parcoauto-app");
-            if(context != null) {
-                list = (List) context.get("roles");
-            }
-        } catch (Exception e) {
-            // TODO: inserire log....
-            e.printStackTrace();
-        }
-
-        return list;
+            }).orElse(Collections.emptyList());
     }
 
     private static User getUser(Map<String, Object> details) {
         User user = new User();
         user.setId(1L);
-        user.setLogin(((String) details.get("username_cnr")).toLowerCase());
+        user.setLogin(
+            (String)Optional.ofNullable(details.get("username_cnr"))
+                .orElse(details.get("preferred_username"))
+        );
         if (details.get("given_name") != null) {
             user.setFirstName((String) details.get("given_name"));
         }

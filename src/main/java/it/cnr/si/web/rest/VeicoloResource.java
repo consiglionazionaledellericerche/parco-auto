@@ -77,7 +77,7 @@ public class VeicoloResource {
     private final CacheService cacheService;
     private final Logger log = LoggerFactory.getLogger(VeicoloResource.class);
     private final VeicoloRepository veicoloRepository;
-    @Autowired
+    @Autowired(required = false)
     private SiglaService siglaService;
     private final VeicoloProprietaRepository veicoloProprietaRepository;
     private final VeicoloNoleggioRepository veicoloNoleggioRepository;
@@ -86,9 +86,9 @@ public class VeicoloResource {
     private final Print print;
     private ValidazioneResource validazioneResource;
 
-    public VeicoloResource(VeicoloRepository veicoloRepository, AceService ace, CacheService cacheService,
+    public VeicoloResource(VeicoloRepository veicoloRepository,@Autowired(required = false) AceService ace, CacheService cacheService,
                            VeicoloProprietaRepository veicoloProprietaRepository, VeicoloNoleggioRepository veicoloNoleggioRepository,
-                           BolloRepository bolloRepository, AssicurazioneVeicoloRepository assicurazioneVeicoloRepository, Print print,
+                           BolloRepository bolloRepository, AssicurazioneVeicoloRepository assicurazioneVeicoloRepository, @Autowired(required = false) Print print,
                            ValidazioneResource validazioneResource) {
         this.veicoloRepository = veicoloRepository;
         this.ace = ace;
@@ -246,18 +246,27 @@ public class VeicoloResource {
     @GetMapping("/veicolos/findUtenza/{term}")
     @Timed
     public ResponseEntity<List<String>> findPersona(@PathVariable String term) {
-        return ResponseEntity.ok(
-            ace.searchUtenti(
-                Stream.of(
-                    new AbstractMap.SimpleEntry<>("page", "0"),
-                    new AbstractMap.SimpleEntry<>("offset", "20"),
-                    new AbstractMap.SimpleEntry<>("username", term)
-                ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
-            )
-                .stream()
-                .filter(utenteDto -> Optional.ofNullable(utenteDto.getUsername()).isPresent())
-                .map(SimpleUtenteWebDto::getUsername)
-                .collect(Collectors.toList()));
+        if (Optional.ofNullable(ace).isPresent()) {
+            return ResponseEntity.ok(
+                ace.searchUtenti(
+                        Stream.of(
+                            new AbstractMap.SimpleEntry<>("page", "0"),
+                            new AbstractMap.SimpleEntry<>("offset", "20"),
+                            new AbstractMap.SimpleEntry<>("username", term)
+                        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+                    )
+                    .stream()
+                    .filter(utenteDto -> Optional.ofNullable(utenteDto.getUsername()).isPresent())
+                    .map(SimpleUtenteWebDto::getUsername)
+                    .collect(Collectors.toList()));
+        } else {
+            final List<String> users = Arrays.asList(CacheService.json2Java("showcase/utenti.json", String[].class));
+            return ResponseEntity.ok(
+                users
+                    .stream()
+                    .filter(s -> s.contains(term)).collect(Collectors.toList())
+            );
+        }
     }
 
     //Per richiamare istituti ACE

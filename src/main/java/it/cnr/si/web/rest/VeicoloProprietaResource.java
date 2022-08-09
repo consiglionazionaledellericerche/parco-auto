@@ -60,7 +60,7 @@ public class VeicoloProprietaResource {
     private static final String ENTITY_NAME = "veicoloProprieta";
     private final Logger log = LoggerFactory.getLogger(VeicoloProprietaResource.class);
 
-    @Autowired
+    @Autowired(required = false)
     private SiglaService siglaService;
     @Autowired
     private VeicoloRepository veicoloRepository;

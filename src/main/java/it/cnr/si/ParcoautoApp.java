@@ -78,7 +78,6 @@ public class ParcoautoApp {
      */
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(ParcoautoApp.class);
-        DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);
     }

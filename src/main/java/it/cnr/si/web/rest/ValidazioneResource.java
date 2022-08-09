@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class ValidazioneResource {
 
-    @Autowired
+    @Autowired(required = false)
     private AceService ace;
 
     private final Logger log = LoggerFactory.getLogger(ValidazioneResource.class);

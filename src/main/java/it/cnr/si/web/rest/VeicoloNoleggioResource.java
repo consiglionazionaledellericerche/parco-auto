@@ -64,7 +64,7 @@ public class VeicoloNoleggioResource {
     private static final String ENTITY_NAME = "veicoloNoleggio";
     private final Logger log = LoggerFactory.getLogger(VeicoloNoleggioResource.class);
 
-    @Autowired
+    @Autowired(required = false)
     private SiglaService siglaService;
     @Autowired
     private VeicoloRepository veicoloRepository;

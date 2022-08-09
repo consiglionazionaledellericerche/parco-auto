@@ -17,6 +17,8 @@
 
 package it.cnr.si.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.cnr.si.domain.*;
 import it.cnr.si.repository.AssicurazioneVeicoloRepository;
 import it.cnr.si.repository.BolloRepository;
@@ -35,9 +37,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +53,7 @@ public class CacheService {
     public static final String ACE_SEDE_LAVORO = "ACE-SEDE-LAVORO";
     @Autowired
     CacheManager cacheManager;
-    @Autowired
+    @Autowired(required = false)
     private AceService aceService;
 
     private BolloRepository bolloRepository;
@@ -78,7 +82,11 @@ public class CacheService {
     }
     @Cacheable(ACE_SEDE_LAVORO)
     public List<SimpleEntitaOrganizzativaWebDto> getSediDiLavoro() {
-        return aceService.entitaOrganizzativaFind(null, null, LocalDate.now(), null);
+        if (aceService != null) {
+            return aceService.entitaOrganizzativaFind(null, null, LocalDate.now(), null);
+        } else {
+            return Arrays.asList(json2Java("showcase/entita_organizzativa.json", SimpleEntitaOrganizzativaWebDto[].class));
+        }
     }
     @Scheduled(cron = "0 0 1 * * ?")
     public void evictAllcachesAtIntervals() {
@@ -206,5 +214,17 @@ public class CacheService {
                 mailService.sendEmail(mail,"Oggi scade la proroga del noleggio per l'auto",testo,false,false);
             }
         }
+    }
+    public static <T> T json2Java(String fileName, Class<T> classType){
+        T t = null;
+        File file = new File("src/main/resources/"+ fileName);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            t=mapper.readValue(file, classType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return t;
     }
 }

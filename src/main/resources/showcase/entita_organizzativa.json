@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "sigla": "000",
+        "cdsuo": "000.000",
+        "denominazione": "STRUTTURA PRINCIPALE ENTE"
+    },
+    {
+        "id": 2,
+        "sigla": "001",
+        "cdsuo": "001.000",
+        "denominazione": "STRUTTURA SECONDARIA ENTE"
+    }
+]
