@@ -112,7 +112,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                KEYCLOAKLOGOUTURL: `'http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/protocol/openid-connect/logout'`
+                KEYCLOAKLOGOUTURL: `'http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/protocol/openid-connect/logout'`,
+                SERVER_API_URL: `'http://parco-auto.test.si.cnr.it'`
             }
         }),
         process.env.JHI_DISABLE_WEBPACK_LOGS

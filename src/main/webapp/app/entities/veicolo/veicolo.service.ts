@@ -89,10 +89,7 @@ export class VeicoloService {
         return this.http.get<any>(`${this.resourceUrl}/getIstituti`);
     }
 
-    pdf() {
-        const print = this.http.get(`${this.resourceUrl}/getAllVeicoli`);
-        print.subscribe((response: any) => {
-            this.dataUtils.openFile('application/pdf', response.b64);
-        });
+    pdf(): Observable<any> {
+        return this.http.get(`${this.resourceUrl}/getAllVeicoli`);
     }
 }

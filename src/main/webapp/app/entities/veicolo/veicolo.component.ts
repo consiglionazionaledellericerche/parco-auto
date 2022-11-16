@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { IVeicolo } from 'app/shared/model/veicolo.model';
 import { Principal } from 'app/core';
@@ -29,6 +29,7 @@ export class VeicoloComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    loadingPDF = false;
 
     constructor(
         private veicoloService: VeicoloService,
@@ -37,7 +38,8 @@ export class VeicoloComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -131,6 +133,10 @@ export class VeicoloComponent implements OnInit, OnDestroy {
     }
 
     openFile() {
-        this.veicoloService.pdf();
+        this.loadingPDF = true;
+        this.veicoloService.pdf().subscribe((response: any) => {
+            this.loadingPDF = false;
+            this.dataUtils.openFile('application/pdf', response.b64);
+        });
     }
 }
