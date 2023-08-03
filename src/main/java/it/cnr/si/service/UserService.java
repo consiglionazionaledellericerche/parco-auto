@@ -191,7 +191,7 @@ public class UserService {
 
         if (!authorities.isEmpty()) {
 
-            if (principalIsInAce) {
+            if (principalIsInAce && !authorities.contains(new SimpleGrantedAuthority(AuthoritiesConstants.VIEWER))) {
                 GrantedAuthority authUser = new SimpleGrantedAuthority(AuthoritiesConstants.USER);
                 authorities.add(authUser);
             }

@@ -27,7 +27,7 @@ public final class AuthoritiesConstants {
     public static final String USER = "ROLE_USER";
 
     public static final String ANONYMOUS = "ROLE_ANONYMOUS";
-
+    public static final String VIEWER = "ROLE_VIEWER#parcoauto-app";
     public static final String SUPERUSER = "ROLE_SUPERUSER";
 
     private AuthoritiesConstants() {

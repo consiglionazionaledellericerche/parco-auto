@@ -34,7 +34,7 @@ export const veicoloRoute: Routes = [
             pagingParams: JhiResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_USER', 'ROLE_VIEWER#parcoauto-app'],
             defaultSort: 'id,asc',
             pageTitle: 'parcoautoApp.veicolo.home.title'
         },
@@ -47,7 +47,7 @@ export const veicoloRoute: Routes = [
             veicolo: VeicoloResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_USER', 'ROLE_VIEWER#parcoauto-app'],
             pageTitle: 'parcoautoApp.veicolo.home.title'
         },
         canActivate: [UserRouteAccessService]

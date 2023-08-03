@@ -33,7 +33,7 @@
     </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
-            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="['ROLE_USER', 'ROLE_VIEWER#parcoauto-app']" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <span>
                         <fa-icon [icon]="'home'"></fa-icon>
@@ -73,7 +73,7 @@
             </li>
 
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *jhiHasAnyAuthority="'ROLE_USER'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="['ROLE_USER', 'ROLE_VIEWER#parcoauto-app']" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <fa-icon [icon]="'car'"></fa-icon>
@@ -83,7 +83,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li>
+                    <li *jhiHasAnyAuthority="['ROLE_USER', 'ROLE_VIEWER#parcoauto-app']">
                         <a class="dropdown-item" routerLink="veicolo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'car'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.veicolo">-->
@@ -91,7 +91,7 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="veicolo-proprieta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'warehouse'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.veicoloProprieta">-->
@@ -99,7 +99,7 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="veicolo-noleggio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'credit-card'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.veicoloNoleggio">-->
@@ -107,7 +107,7 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="libretto-percorrenza-veicolo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'road'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.librettoPercorrenzaVeicolo">-->
@@ -115,7 +115,7 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="assicurazione-veicolo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'car-crash'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.assicurazioneVeicolo">-->
@@ -123,13 +123,13 @@
                             <!--</span>-->
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="multa" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'ban'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.multa">Multa</span>-->Multa
                         </a>
                     </li>
-                    <li>
+                    <li *jhiHasAnyAuthority="'ROLE_USER'">
                         <a class="dropdown-item" routerLink="bollo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'book'" [fixedWidth]="true"></fa-icon>
                             <!--<span jhiTranslate="global.menu.entities.bollo">Bollo</span>-->Bollo

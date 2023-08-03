@@ -185,7 +185,7 @@ public class VeicoloResource {
         List<String> cdSUO = SecurityUtils.getCdSUO();
         //allVeicoli();throws JSONException
         Page<Veicolo> veicoli;
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN,AuthoritiesConstants.VIEWER)) {
             veicoli = veicoloRepository.findByDeletedFalse(pageable);
         } else {
             veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false, pageable);
@@ -210,7 +210,7 @@ public class VeicoloResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         List<String> cdSUO = SecurityUtils.getCdSUO();
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) ||
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN, AuthoritiesConstants.VIEWER) ||
             cdSUO.contains(veicolo.get().getIstituto()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -301,7 +301,7 @@ public class VeicoloResource {
     public ResponseEntity<Map<String, Object>> allVeicoli() throws IOException {
         List<String> cdSUO = SecurityUtils.getCdSUO();
         List<Veicolo> veicoliAll;
-        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN))) {
+        if (!(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN,AuthoritiesConstants.VIEWER))) {
             veicoliAll = veicoloRepository.findByIstitutoStartsWithAndDeleted(
                 cdSUO,
                 false);
