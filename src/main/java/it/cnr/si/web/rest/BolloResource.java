@@ -93,7 +93,7 @@ public class BolloResource {
 
         String data = bollo.getDataScadenza().toString().substring(0,10);
         String testo = "Controllare procedura Parco Auto CNR che è stato inserito un bollo da pagare per la vettura ("+bollo.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-        String mail = bollo.getVeicolo().getResponsabile().toString()+"@cnr.it";
+        String mail = mailService.getEMailSedeDiAppartenenza(bollo.getVeicolo().getResponsabile());
         log.debug("Bollo mail a chi va: {}", mail);
 
         mailService.sendEmail(mail,"inserito bollo da pagare in procedura",testo,false,false);

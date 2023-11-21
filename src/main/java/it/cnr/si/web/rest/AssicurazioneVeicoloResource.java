@@ -91,7 +91,7 @@ public class AssicurazioneVeicoloResource {
         }
         String data = assicurazioneVeicolo.getDataScadenza().toString();
         String testo = "Controllare procedura Parco Auto CNR che è stata inserita un assicurazione da pagare per la vettura ("+assicurazioneVeicolo.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-        String mail = assicurazioneVeicolo.getVeicolo().getResponsabile().toString()+"@cnr.it";
+        String mail = mailService.getEMailSedeDiAppartenenza(assicurazioneVeicolo.getVeicolo().getResponsabile());
         log.debug("assicurazione mail a chi va: {}", mail);
         log.debug("assicurazione testo a chi va: {}", testo);
 

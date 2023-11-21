@@ -44,6 +44,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CacheService {
@@ -139,7 +140,7 @@ public class CacheService {
                     bolloRepository.save(bollo);
                     String data = dataImmatricolazione.toString().substring(0,10);
                     String testo = "Oggi scade il bollo per l'auto ("+vp.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-                    String mail = vp.getVeicolo().getResponsabile().toString()+"@cnr.it";
+                    String mail = mailService.getEMailSedeDiAppartenenza(vp.getVeicolo().getResponsabile());
 
                     mailService.sendEmail(mail,"Oggi scade il bollo per l'auto",testo,false,false);
 
@@ -170,7 +171,7 @@ public class CacheService {
                     assicurazioneVeicoloRepository.save(assicurazioneVeicolo);
                     String data = dataImmatricolazione.toString().substring(0,10);
                     String testo = "Oggi scade l'assicurazione per l'auto ("+vp.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-                    String mail = vp.getVeicolo().getResponsabile().toString()+"@cnr.it";
+                    String mail = mailService.getEMailSedeDiAppartenenza(vp.getVeicolo().getResponsabile());
 
                     mailService.sendEmail(mail,"Oggi scade l'assicurazione per l'auto",testo,false,false);
 
@@ -200,7 +201,7 @@ public class CacheService {
                 //Mandare email che ricorda che scade il noleggio oggi
                 String data = dataFineNoleggio.toString().substring(0,10);
                 String testo = "Oggi scade il noleggio per l'auto  ("+vn.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-                String mail = vn.getVeicolo().getResponsabile().toString()+"@cnr.it";
+                String mail = mailService.getEMailSedeDiAppartenenza(vn.getVeicolo().getResponsabile());
 
                 mailService.sendEmail(mail,"Oggi scade il noleggio per l'auto",testo,false,false);
             }
@@ -209,7 +210,7 @@ public class CacheService {
                 //Mandare email che ricorda che scade il la proroga del noleggio oggi
                 String data = dataProroga.toString().substring(0,10);
                 String testo = "Oggi scade la proroga del noleggio per l'auto  ("+vn.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-                String mail = vn.getVeicolo().getResponsabile().toString()+"@cnr.it";
+                String mail = mailService.getEMailSedeDiAppartenenza(vn.getVeicolo().getResponsabile());
 
                 mailService.sendEmail(mail,"Oggi scade la proroga del noleggio per l'auto",testo,false,false);
             }

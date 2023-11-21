@@ -97,7 +97,7 @@ public class MultaResource {
 
         String data = multa.getDataMulta().toString().substring(0,10);
         String testo = "Controllare procedura Parco Auto CNR che è stata inserita una nuova multa da pagare per la vettura ("+multa.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
-        String mail = multa.getVeicolo().getResponsabile().toString()+"@cnr.it";
+        String mail = mailService.getEMailSedeDiAppartenenza(multa.getVeicolo().getResponsabile());
         log.debug("Multa mail a chi va: {}", mail);
         //da cancellare poi
         //mail = "valerio.diego@cnr.it";
