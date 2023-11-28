@@ -43,7 +43,10 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.text.DateFormat;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -91,7 +94,10 @@ public class BolloResource {
         ZonedDateTime dataVis = null;
         bollo.setVisionatoBollo(dataVis);
 
-        String data = bollo.getDataScadenza().toString().substring(0,10);
+        String data = Optional.ofNullable(bollo)
+            .flatMap(bollo1 -> Optional.ofNullable(bollo1.getDataScadenza()))
+            .map(instant -> DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(instant))
+            .orElse("");
         String testo = "Controllare procedura Parco Auto CNR che è stato inserito un bollo da pagare per la vettura ("+bollo.getVeicolo().getTarga()+") in data:"+data+". \n \n Procedura Parco Auto CNR";
         String mail = mailService.getEMailSedeDiAppartenenza(bollo.getVeicolo().getResponsabile());
         log.debug("Bollo mail a chi va: {}", mail);
