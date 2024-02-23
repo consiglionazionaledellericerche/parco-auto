@@ -146,7 +146,10 @@ export class VeicoloComponent implements OnInit, OnDestroy {
         this.loadingCSV = true;
         this.veicoloService.csv().subscribe((response: any) => {
             this.loadingCSV = false;
-            saveAs(response, 'veicoli.csv');
+            const data: Blob = new Blob([response], {
+                type: 'text/csv;charset=utf-8'
+            });
+            saveAs(data, 'veicoli.csv');
         });
     }
 }

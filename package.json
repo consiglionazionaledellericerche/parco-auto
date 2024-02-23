@@ -35,7 +35,7 @@
     "swagger-ui": "2.2.10",
     "tslib": "1.9.3",
     "zone.js": "0.8.26",
-    "file-saver": "^2.0.2"
+    "file-saver": "^2.0.5"
   },
   "devDependencies": {
     "@angular/cli": "6.1.2",
