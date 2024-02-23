@@ -9,6 +9,7 @@ import { Principal } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { VeicoloService } from './veicolo.service';
+import { saveAs } from 'file-saver';
 
 @Component({
     selector: 'jhi-veicolo',
@@ -30,6 +31,7 @@ export class VeicoloComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
     loadingPDF = false;
+    loadingCSV = false;
 
     constructor(
         private veicoloService: VeicoloService,
@@ -137,6 +139,14 @@ export class VeicoloComponent implements OnInit, OnDestroy {
         this.veicoloService.pdf().subscribe((response: any) => {
             this.loadingPDF = false;
             this.dataUtils.openFile('application/pdf', response.b64);
+        });
+    }
+
+    openFileCSV() {
+        this.loadingCSV = true;
+        this.veicoloService.csv().subscribe((response: any) => {
+            this.loadingCSV = false;
+            saveAs(response, 'veicoli.csv');
         });
     }
 }

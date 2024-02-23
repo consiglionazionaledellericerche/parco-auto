@@ -20,18 +20,25 @@ package it.cnr.si.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 /**
  * Configure the converters to use the ISO format for dates by default.
  */
 @Configuration
-public class DateTimeFormatConfiguration implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
         registrar.setUseIsoFormat(true);
         registrar.registerFormatters(registry);
+    }
+    @Override
+    public void extendMessageConverters (List<HttpMessageConverter<?>> converters) {
+        converters.add(new CsvHttpMessageConverter<>());
     }
 }

@@ -92,4 +92,8 @@ export class VeicoloService {
     pdf(): Observable<any> {
         return this.http.get(`${this.resourceUrl}/getAllVeicoli`);
     }
+
+    csv(): Observable<any> {
+        return this.http.get(`${this.resourceUrl}/csv`, { responseType: 'text' });
+    }
 }

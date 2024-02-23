@@ -35,6 +35,7 @@ import it.cnr.si.service.dto.anagrafica.letture.EntitaOrganizzativaWebDto;
 import it.cnr.si.service.dto.anagrafica.scritture.UtenteDto;
 import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleEntitaOrganizzativaWebDto;
 import it.cnr.si.service.dto.anagrafica.simpleweb.SimpleUtenteWebDto;
+import it.cnr.si.web.rest.dto.VeicoloDTO;
 import it.cnr.si.web.rest.errors.BadRequestAlertException;
 import it.cnr.si.web.rest.util.HeaderUtil;
 import it.cnr.si.web.rest.util.PaginationUtil;
@@ -194,6 +195,20 @@ public class VeicoloResource {
         return new ResponseEntity<>(veicoli.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping(value="/veicolos/csv", produces = "text/csv")
+    @Timed
+    public ResponseEntity<List<VeicoloDTO>> getAllCSVVeicolos() {
+        log.debug("REST request to get all Veicolos in csv");
+        List<String> cdSUO = SecurityUtils.getCdSUO();
+        List<Veicolo> veicoli;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN,AuthoritiesConstants.VIEWER)) {
+            veicoli = veicoloRepository.findByDeletedFalse();
+        } else {
+            veicoli = veicoloRepository.findByIstitutoStartsWithAndDeleted(cdSUO, false);
+        }
+        return new ResponseEntity<>(veicoli.stream().map(veicolo -> new VeicoloDTO(veicolo)).collect(Collectors.toList()), HttpStatus.OK);
+    }
+
     /**
      * GET  /veicolos/:id : get the "id" veicolo.
      *
@@ -335,16 +350,18 @@ public class VeicoloResource {
                             }
                         ).orElse(""))
                         .setBollo(bolloOptional.map(bollo -> {
-                            return formatter.format(bollo.getDataScadenza());
+                            return Optional.ofNullable(bollo.getDataScadenza()).map(instant -> formatter.format(instant)).orElse("");
                         }).collect(Collectors.joining(";")))
                         .setAssicurazione(assicurazioneVeicoloOptional.map(
                             assicurazioneVeicolo -> {
-                                return "Compagnia:" + assicurazioneVeicolo.getCompagniaAssicurazione() + " Numero Polizza: " + assicurazioneVeicolo.getNumeroPolizza() + " Scadenza:" + formatter.format(assicurazioneVeicolo.getDataScadenza());
+                                return "Compagnia:" + assicurazioneVeicolo.getCompagniaAssicurazione() + " Numero Polizza: " + assicurazioneVeicolo.getNumeroPolizza() +
+                                    Optional.ofNullable(assicurazioneVeicolo.getDataScadenza()).map(instant -> " Scadenza:" + formatter.format(instant)).orElse("");
                             }
                         ).collect(Collectors.joining(";")))
                         .setNoleggio(veicoloNoleggioOptional.map(
                             veicoloNoleggio -> {
-                                return "Società:" + veicoloNoleggio.getSocieta() + " Data Inizio:" + formatter.format(veicoloNoleggio.getDataInizioNoleggio()) + " Data Fine: " + formatter.format(veicoloNoleggio.getDataFineNoleggio());
+                                return "Società:" + veicoloNoleggio.getSocieta() + " Data Inizio:" + formatter.format(veicoloNoleggio.getDataInizioNoleggio()) +
+                                    Optional.ofNullable(veicoloNoleggio.getDataFineNoleggio()).map(instant -> " Data Fine: " + formatter.format(instant)).orElse("");
                             }
                         ).orElse(""));
                 }).collect(Collectors.toList())

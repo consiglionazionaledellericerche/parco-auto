@@ -18,8 +18,11 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="parcoautoApp.veicolo.home.title">Veicolos</span>
+        <button (click)="openFileCSV()" class="btn btn-outline-success float-right ml-1">
+            <fa-icon *ngIf="!loadingCSV" [icon]="'file-excel'"></fa-icon><fa-icon *ngIf="loadingCSV" [icon]="'spinner'" [spin]="true"></fa-icon> Estrai Veicoli
+        </button>
         <button (click)="openFile()" class="btn btn-outline-danger float-right ml-1">
-            <fa-icon *ngIf="!loadingPDF" [icon]="'file-pdf'"></fa-icon><fa-icon *ngIf="loadingPDF" [icon]="'spinner'" [spin]="true"></fa-icon> Stampa veicoli
+            <fa-icon *ngIf="!loadingPDF" [icon]="'file-pdf'"></fa-icon><fa-icon *ngIf="loadingPDF" [icon]="'spinner'" [spin]="true"></fa-icon> Stampa Veicoli
         </button>
         <button *jhiHasAnyAuthority="'ROLE_USER'" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-veicolo" [routerLink]="['/veicolo/new']">
             <fa-icon [icon]="'plus'"></fa-icon>

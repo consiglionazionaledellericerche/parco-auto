@@ -53,7 +53,8 @@ import {
     faFilePdf,
     faCheckDouble,
     faInfoCircle,
-    faSpinner
+    faSpinner,
+    faFileExcel
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
@@ -106,4 +107,5 @@ library.add(faFilePdf);
 library.add(faCheckDouble);
 library.add(faInfoCircle);
 library.add(faSpinner);
+library.add(faFileExcel);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
