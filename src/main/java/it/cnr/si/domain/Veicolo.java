@@ -17,6 +17,7 @@
 
 package it.cnr.si.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -110,6 +111,16 @@ public class Veicolo implements Serializable {
     @NotNull
     @JsonIgnoreProperties("")
     private UtilizzoBeneVeicolo utilizzoBeneVeicolo;
+
+    @OneToOne(mappedBy="veicolo",fetch = FetchType.EAGER)
+    @JoinColumn(insertable = false, updatable = false, nullable = false, unique = true)
+    @JsonIgnore
+    private VeicoloProprieta veicoloProprieta;
+
+    @OneToOne(mappedBy="veicolo", fetch = FetchType.EAGER)
+    @JoinColumn(insertable = false, updatable = false, nullable = false, unique = true)
+    @JsonIgnore
+    private VeicoloNoleggio veicoloNoleggio;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -328,7 +339,22 @@ public class Veicolo implements Serializable {
         this.utilizzoBeneVeicolo = utilizzoBeneVeicolo;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    public VeicoloProprieta getVeicoloProprieta() {
+        return veicoloProprieta;
+    }
+
+    public void setVeicoloProprieta(VeicoloProprieta veicoloProprieta) {
+        this.veicoloProprieta = veicoloProprieta;
+    }
+
+    public VeicoloNoleggio getVeicoloNoleggio() {
+        return veicoloNoleggio;
+    }
+
+    public void setVeicoloNoleggio(VeicoloNoleggio veicoloNoleggio) {
+        this.veicoloNoleggio = veicoloNoleggio;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

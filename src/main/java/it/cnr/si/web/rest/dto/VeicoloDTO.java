@@ -21,7 +21,8 @@ import com.opencsv.bean.CsvBindByName;
 import it.cnr.si.config.CustomCsvBindByPosition;
 import it.cnr.si.domain.*;
 
-import javax.swing.text.html.Option;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class VeicoloDTO {
@@ -65,6 +66,32 @@ public class VeicoloDTO {
     @CustomCsvBindByPosition(13)
     private final String utilizzoBeneVeicolo;
 
+    @CsvBindByName(column = "Noleggio - Società")
+    @CustomCsvBindByPosition(14)
+    private String noleggioSocieta;
+    @CsvBindByName(column = "Noleggio - Data Inizio")
+    @CustomCsvBindByPosition(15)
+    private String noleggioDataInizio;
+    @CsvBindByName(column = "Noleggio - Data Fine")
+    @CustomCsvBindByPosition(16)
+    private String noleggioDataFine;
+    @CsvBindByName(column = "Noleggio - Data Proroga")
+    @CustomCsvBindByPosition(17)
+    private String noleggioDataProroga;
+    @CsvBindByName(column = "Noleggio - Partita IVA")
+    @CustomCsvBindByPosition(18)
+    private String noleggioPartitaIVA;
+
+    @CsvBindByName(column = "Proprietà - Data Acquisto")
+    @CustomCsvBindByPosition(19)
+    private String proprietaDataAcquisto;
+    @CsvBindByName(column = "Proprietà - Regione Immatricolazione")
+    @CustomCsvBindByPosition(20)
+    private String proprietaRegione;
+    @CsvBindByName(column = "Proprietà - Etichetta")
+    @CustomCsvBindByPosition(21)
+    private String proprietaEtichetta;
+
     public VeicoloDTO(Veicolo veicolo) {
         this.targa = veicolo.getTarga();
         this.marca = veicolo.getMarca();
@@ -79,6 +106,24 @@ public class VeicoloDTO {
         this.alimentazioneVeicolo = Optional.ofNullable(veicolo.getAlimentazioneVeicolo()).map(AlimentazioneVeicolo::getNome).orElse("");
         this.classeEmissioniVeicolo = Optional.ofNullable(veicolo.getClasseEmissioniVeicolo()).map(ClasseEmissioniVeicolo::getNome).orElse("");
         this.utilizzoBeneVeicolo = Optional.ofNullable(veicolo.getUtilizzoBeneVeicolo()).map(UtilizzoBeneVeicolo::getNome).orElse("");
+        Optional.ofNullable(veicolo.getVeicoloNoleggio())
+            .ifPresent(veicoloNoleggio -> {
+                this.noleggioSocieta = veicoloNoleggio.getSocieta();
+                this.noleggioDataInizio = Optional.ofNullable(veicoloNoleggio.getDataInizioNoleggio())
+                    .map(instant -> DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(instant)).orElse("");
+                this.noleggioDataFine = Optional.ofNullable(veicoloNoleggio.getDataFineNoleggio())
+                    .map(instant -> DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(instant)).orElse("");
+                this.noleggioDataProroga = Optional.ofNullable(veicoloNoleggio.getDataProroga())
+                    .map(instant -> DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(instant)).orElse("");
+                this.noleggioPartitaIVA = veicoloNoleggio.getPartitaIva();
+            });
+        Optional.ofNullable(veicolo.getVeicoloProprieta())
+            .ifPresent(veicoloProprieta -> {
+                this.proprietaRegione = veicoloProprieta.getRegioneImmatricolazione();
+                this.proprietaDataAcquisto = Optional.ofNullable(veicoloProprieta.getDataAcquisto())
+                    .map(instant -> DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(instant)).orElse("");
+                this.proprietaEtichetta = veicoloProprieta.getEtichetta();
+            });
     }
 
 }
