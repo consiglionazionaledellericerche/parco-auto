@@ -113,14 +113,14 @@
                         <div class="form-row">
                             <div class="form-group col-md-5">
                                 <label class="form-control-label" jhiTranslate="parcoautoApp.assicurazioneVeicolo.dataInserimento" for="field_dataInserimento">Data Inserimento</label>
-                                <div class="d-flex">
-                                   <input id="field_dataInserimento" type="text" class="form-control" mwlFlatpickr name="dataInserimento" [(ngModel)]="assicurazioneVeicolo.dataInserimento"
-                                           [enableTime]="true"
-                                           [time24hr]="true"
-                                           dateFormat="d-m-Y H:i"
+                                <div class="input-group">
+                                    <input id="field_dataInserimento" type="text" class="form-control" name="dataInserimento" ngbDatepicker  #dataInserimentoDp="ngbDatepicker" [(ngModel)]="assicurazioneVeicolo.dataInserimento"
                                            required/>
+                                    <span class="input-group-append">
+                                    <button type="button" class="btn btn-secondary" (click)="dataInserimentoDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                                    </span>
                                 </div>
-                                <!--<div [hidden]="!(editForm.controls.dataInserimento?.dirty && editForm.controls.dataInserimento?.invalid)">
+                               <div [hidden]="!(editForm.controls.dataInserimento?.dirty && editForm.controls.dataInserimento?.invalid)">
                                     <small class="form-text text-danger"
                                            [hidden]="!editForm.controls.dataInserimento?.errors?.required" jhiTranslate="entity.validation.required">
                                         This field is required.
@@ -129,7 +129,7 @@
                                            [hidden]="!editForm.controls.dataInserimento?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
                                         This field should be a date and time.
                                     </small>
-                                </div>-->
+                                </div>
                             </div>
                             <div class="form-group col-md-5">
                                 <label class="form-control-label" jhiTranslate="parcoautoApp.assicurazioneVeicolo.dataScadenza" for="field_dataScadenza">Data Scadenza</label>
