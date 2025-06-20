@@ -80,7 +80,6 @@ export class AssicurazioneVeicoloUpdateComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        this.assicurazioneVeicolo.dataInserimento = this.dataInserimento != null ? moment(this.dataInserimento, DATE_TIME_FORMAT) : null;
         if (this.assicurazioneVeicolo.id !== undefined) {
             this.subscribeToSaveResponse(this.assicurazioneVeicoloService.update(this.assicurazioneVeicolo));
         } else {
