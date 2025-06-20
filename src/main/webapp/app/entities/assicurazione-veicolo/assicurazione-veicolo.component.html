@@ -51,7 +51,7 @@
                     <a *ngIf="assicurazioneVeicolo.polizza" (click)="openFile(assicurazioneVeicolo.polizzaContentType, assicurazioneVeicolo.polizza)" jhiTranslate="entity.action.open">open</a>
                     <span *ngIf="assicurazioneVeicolo.polizza">{{assicurazioneVeicolo.polizzaContentType}}, {{byteSize(assicurazioneVeicolo.polizza)}}</span>
                 </td>
-                <td>{{assicurazioneVeicolo.dataInserimento | date:'medium'}}</td>
+                <td>{{assicurazioneVeicolo.dataInserimento | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="assicurazioneVeicolo.veicolo">
                         <a [routerLink]="['../veicolo', assicurazioneVeicolo.veicolo?.id, 'view' ]" >{{assicurazioneVeicolo.veicolo?.targa}}</a>
