@@ -1,8 +1,8 @@
 # This repository adheres to the publiccode.yml standard by including this
 # metadata file that makes public software easily discoverable.
-# More info at https://github.com/italia/publiccode.yml
+# More info at https://github.com/publiccodeyml/publiccode.yml
 
-publiccodeYmlVersion: '0.2'
+publiccodeYmlVersion: '0'
 name: parcoauto
 releaseDate: '2021-12-09'
 url: 'https://github.com/consiglionazionaledellericerche/parco-auto'
@@ -18,6 +18,8 @@ categories:
   - it-development
   - application-development
 logo: docs/logo.png
+organisation:
+  uri: 'urn:x-italian-pa:cnr'
 maintenance:
   type: internal
   contacts:
@@ -30,14 +32,6 @@ localisation:
   localisationReady: true
   availableLanguages:
     - it
-it:
-  riuso:
-    codiceIPA: cnr
-  conforme:
-    lineeGuidaDesign: yes
-    modelloInteroperabilita: yes
-    misureMinimeSicurezza: yes
-    gdpr: yes
 description:
   it:
     longDescription: >
@@ -65,7 +59,6 @@ description:
 
 
     localisedName: Parco Auto
-    genericName: Parco Auto
     shortDescription: >-
         Parco Auto permette di gestire il parco macchine di un ente
     documentation: >-
